@@ -90,12 +90,12 @@
     <!-- Top Admin Bar -->
     <div class="top-bar">
         <div class="lang-toggle">
-            <button class="lang-btn active"><i class="fa-solid fa-flag"></i> Bahasa Melayu</button>
-            <button class="lang-btn">English</button>
+            <button class="lang-btn active" id="btn-bm" onclick="setLanguage('bm')"><i class="fa-solid fa-flag"></i> Bahasa Melayu</button>
+            <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">English</button>
         </div>
         <div class="top-nav-links">
-            <a href="#"><i class="fa-solid fa-user-tie"></i> Guru</a>
-            <a href="#">Log Keluar</a>
+            <a href="#"><i class="fa-solid fa-user-tie"></i> <span data-i18n="top-teacher">Guru</span></a>
+            <a href="#" data-i18n="top-logout">Log Keluar</a>
         </div>
     </div>
 
@@ -105,25 +105,25 @@
             <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="logo-title">
                 <h1>e-Kemunting Pro <span class="badge-smk">SMKPK</span></h1>
-                <p>SMK Paya Kemunting • Ilmu • Amal • Jaya</p>
+                <p>SMK Paya Kemunting • <span data-i18n="motto">Ilmu • Amal • Jaya</span></p>
             </div>
         </div>
         <div class="user-profile">
             <div class="avatar">CA</div>
             <div>
                 <h4 style="font-size:13px; font-weight:700;">Cikgu Athira</h4>
-                <p style="font-size:11px; color:#64748b;">Portal Guru</p>
+                <p style="font-size:11px; color:#64748b;" data-i18n="role-portal">Portal Guru</p>
             </div>
         </div>
     </header>
 
     <!-- Navigation Bar -->
     <div class="nav-bar no-print">
-        <button class="nav-btn active" onclick="showSection('dashboard')"><i class="fa-solid fa-border-all"></i> Papan Pemuka</button>
-        <button class="nav-btn" onclick="showSection('kehadiran')"><i class="fa-regular fa-calendar-check"></i> Kehadiran</button>
-        <button class="nav-btn" onclick="showSection('kerjarumah')"><i class="fa-regular fa-folder-open"></i> Kerja Rumah</button>
-        <button class="nav-btn" onclick="showSection('murid')"><i class="fa-solid fa-users"></i> Murid</button>
-        <button class="nav-btn" onclick="showSection('laporan')"><i class="fa-solid fa-chart-bar"></i> Laporan RPH</button>
+        <button class="nav-btn active" onclick="showSection('dashboard')"><i class="fa-solid fa-border-all"></i> <span data-i18n="nav-dashboard">Papan Pemuka</span></button>
+        <button class="nav-btn" onclick="showSection('kehadiran')"><i class="fa-regular fa-calendar-check"></i> <span data-i18n="nav-attendance">Kehadiran</span></button>
+        <button class="nav-btn" onclick="showSection('kerjarumah')"><i class="fa-regular fa-folder-open"></i> <span data-i18n="nav-homework">Kerja Rumah</span></button>
+        <button class="nav-btn" onclick="showSection('murid')"><i class="fa-solid fa-users"></i> <span data-i18n="nav-students">Murid</span></button>
+        <button class="nav-btn" onclick="showSection('laporan')"><i class="fa-solid fa-chart-bar"></i> <span data-i18n="nav-reports">Laporan RPH</span></button>
     </div>
 
     <!-- Main Content Container -->
@@ -133,52 +133,52 @@
         <div id="section-dashboard">
             <div class="hero-banner">
                 <div>
-                    <span style="font-size:11px; opacity:0.8;">SMK PAYA KEMUNTING • ILMU • AMAL • JAYA</span>
-                    <h2>Selamat Datang, Cikgu Athira 👋</h2>
-                    <p style="font-size:12px; opacity:0.85;">Modul Rekod & Peratus Kehadiran Pengajaran (RPH)</p>
+                    <span style="font-size:11px; opacity:0.8;">SMK PAYA KEMUNTING • <span data-i18n="motto">ILMU • AMAL • JAYA</span></span>
+                    <h2 data-i18n="hero-welcome">Selamat Datang, Cikgu Athira 👋</h2>
+                    <p style="font-size:12px; opacity:0.85;" data-i18n="hero-subtitle">Modul Rekod & Peratus Kehadiran Pengajaran (RPH)</p>
                 </div>
                 <div class="hero-stat">
-                    <span style="font-size:10px;">Peratus Kehadiran Terkini</span>
+                    <span style="font-size:10px;" data-i18n="hero-stat-title">Peratus Kehadiran Terkini</span>
                     <h3 id="statPeratus">0%</h3>
                 </div>
             </div>
 
-            <div class="section-title">Apakah tindakan yang ingin anda lakukan?</div>
+            <div class="section-title" data-i18n="action-title">Apakah tindakan yang ingin anda lakukan?</div>
 
             <div class="grid-cards">
                 <div class="card" onclick="showSection('kehadiran')">
                     <div class="card-icon icon-green"><i class="fa-regular fa-clipboard"></i></div>
                     <div class="card-content">
-                        <h3>1. Ambil Kehadiran</h3>
-                        <p>Tanda dan kemaskini kehadiran murid secara terus.</p>
-                        <span class="card-link">Buka Buku Kehadiran →</span>
+                        <h3 data-i18n="card1-title">1. Ambil Kehadiran</h3>
+                        <p data-i18n="card1-desc">Tanda dan kemaskini kehadiran murid secara terus.</p>
+                        <span class="card-link" data-i18n="card1-link">Buka Buku Kehadiran →</span>
                     </div>
                 </div>
 
                 <div class="card" onclick="showSection('kerjarumah')">
                     <div class="card-icon icon-blue"><i class="fa-solid fa-book"></i></div>
                     <div class="card-content">
-                        <h3>2. Semak Kerja Rumah</h3>
-                        <p>Tambah tugasan baharu & semak status murid.</p>
-                        <span class="card-link">Semak Tugasan Murid →</span>
+                        <h3 data-i18n="card2-title">2. Semak Kerja Rumah</h3>
+                        <p data-i18n="card2-desc">Tambah tugasan baharu & semak status murid.</p>
+                        <span class="card-link" data-i18n="card2-link">Semak Tugasan Murid →</span>
                     </div>
                 </div>
 
                 <div class="card" onclick="showSection('murid')">
                     <div class="card-icon icon-purple"><i class="fa-solid fa-user-group"></i></div>
                     <div class="card-content">
-                        <h3>3. Maklumat Murid</h3>
-                        <p>Tambah murid baharu atau lihat profil sedia ada.</p>
-                        <span class="card-link">Lihat Senarai Murid →</span>
+                        <h3 data-i18n="card3-title">3. Maklumat Murid</h3>
+                        <p data-i18n="card3-desc">Tambah murid baharu atau lihat profil sedia ada.</p>
+                        <span class="card-link" data-i18n="card3-link">Lihat Senarai Murid →</span>
                     </div>
                 </div>
 
                 <div class="card" onclick="showSection('laporan')">
                     <div class="card-icon icon-orange"><i class="fa-solid fa-print"></i></div>
                     <div class="card-content">
-                        <h3>4. Cetak Laporan RPH</h3>
-                        <p>Jana laporan kehadiran & latihan untuk cetakan/RPH.</p>
-                        <span class="card-link">Buka Laporan & Cetak →</span>
+                        <h3 data-i18n="card4-title">4. Cetak Laporan RPH</h3>
+                        <p data-i18n="card4-desc">Jana laporan kehadiran & latihan untuk cetakan/RPH.</p>
+                        <span class="card-link" data-i18n="card4-link">Buka Laporan & Cetak →</span>
                     </div>
                 </div>
             </div>
@@ -187,17 +187,17 @@
         <!-- 1. MODUL KEHADIRAN -->
         <div id="section-kehadiran" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-                <h2><i class="fa-regular fa-calendar-check"></i> Modul Kehadiran Harian</h2>
-                <button onclick="window.print()" class="btn btn-dark no-print"><i class="fa-solid fa-print"></i> Cetak / Simpan PDF</button>
+                <h2><i class="fa-regular fa-calendar-check"></i> <span data-i18n="kh-title">Modul Kehadiran Harian</span></h2>
+                <button onclick="window.print()" class="btn btn-dark no-print"><i class="fa-solid fa-print"></i> <span data-i18n="btn-print">Cetak / Simpan PDF</span></button>
             </div>
 
             <div class="form-row" style="margin-bottom:16px;">
                 <div class="form-group" style="flex:1;">
-                    <label>Tarikh Kehadiran:</label>
+                    <label data-i18n="label-date">Tarikh Kehadiran:</label>
                     <input type="date" id="khTarikh" class="form-control">
                 </div>
                 <div class="form-group" style="flex:1;">
-                    <label>Kelas:</label>
+                    <label data-i18n="label-class">Kelas:</label>
                     <input type="text" value="3 Gamma" class="form-control" readonly>
                 </div>
             </div>
@@ -205,10 +205,10 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Bil</th>
-                        <th>Nama Murid</th>
-                        <th>Status Kehadiran</th>
-                        <th>Catatan</th>
+                        <th data-i18n="th-no">Bil</th>
+                        <th data-i18n="th-student">Nama Murid</th>
+                        <th data-i18n="th-status">Status Kehadiran</th>
+                        <th data-i18n="th-notes">Catatan</th>
                     </tr>
                 </thead>
                 <tbody id="senaraiKehadiranBody">
@@ -217,36 +217,36 @@
             </table>
 
             <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
-                <div><strong>Peratus Kehadiran: <span id="khPeratusText" style="color:#1e40af; font-size:16px;">0%</span></strong></div>
-                <button onclick="simpanKehadiran()" class="btn btn-primary no-print"><i class="fa-solid fa-floppy-disk"></i> Simpan Kehadiran</button>
+                <div><strong data-i18n="kh-rate">Peratus Kehadiran: <span id="khPeratusText" style="color:#1e40af; font-size:16px;">0%</span></strong></div>
+                <button onclick="simpanKehadiran()" class="btn btn-primary no-print"><i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btn-save-kh">Simpan Kehadiran</span></button>
             </div>
         </div>
 
         <!-- 2. MODUL KERJA RUMAH -->
         <div id="section-kerjarumah" class="view-section">
-            <h2><i class="fa-solid fa-book"></i> Rekod Kerja Rumah & Tugasan</h2>
+            <h2><i class="fa-solid fa-book"></i> <span data-i18n="kr-title">Rekod Kerja Rumah & Tugasan</span></h2>
             <br>
             <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1;" class="no-print">
-                <h4 style="font-size:13px; margin-bottom:8px;">Tambah Tugasan / Kerja Rumah Baharu:</h4>
+                <h4 style="font-size:13px; margin-bottom:8px;" data-i18n="kr-add-title">Tambah Tugasan / Kerja Rumah Baharu:</h4>
                 <div class="form-row">
-                    <input type="text" id="krNama" placeholder="Nama Murid" class="form-control" style="flex:1;">
-                    <input type="text" id="krTajuk" placeholder="Tajuk Tugasan (cth: Karangan Laporan)" class="form-control" style="flex:1;">
+                    <input type="text" id="krNama" placeholder="Nama Murid" class="form-control" style="flex:1;" data-i18n-ph="ph-student-name">
+                    <input type="text" id="krTajuk" placeholder="Tajuk Tugasan (cth: Karangan Laporan)" class="form-control" style="flex:1;" data-i18n-ph="ph-task-title">
                     <select id="krStatus" class="form-control" style="flex:1;">
-                        <option value="Selesai">Selesai</option>
-                        <option value="Belum Hantar">Belum Hantar</option>
+                        <option value="Selesai" data-i18n="opt-done">Selesai</option>
+                        <option value="Belum Hantar" data-i18n="opt-pending">Belum Hantar</option>
                     </select>
-                    <button onclick="tambahKerjaRumah()" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah</button>
+                    <button onclick="tambahKerjaRumah()" class="btn btn-success"><i class="fa-solid fa-plus"></i> <span data-i18n="btn-add">Tambah</span></button>
                 </div>
             </div>
 
             <table style="margin-top:20px;">
                 <thead>
                     <tr>
-                        <th>Bil</th>
-                        <th>Nama Murid</th>
-                        <th>Tajuk Tugasan</th>
-                        <th>Status</th>
-                        <th class="no-print">Tindakan</th>
+                        <th data-i18n="th-no">Bil</th>
+                        <th data-i18n="th-student">Nama Murid</th>
+                        <th data-i18n="th-task">Tajuk Tugasan</th>
+                        <th data-i18n="th-status">Status</th>
+                        <th class="no-print" data-i18n="th-action">Tindakan</th>
                     </tr>
                 </thead>
                 <tbody id="senaraiKRBody">
@@ -257,26 +257,26 @@
 
         <!-- 3. MODUL MAKLUMAT MURID -->
         <div id="section-murid" class="view-section">
-            <h2><i class="fa-solid fa-users"></i> Maklumat & Profil Murid</h2>
+            <h2><i class="fa-solid fa-users"></i> <span data-i18n="m-title">Maklumat & Profil Murid</span></h2>
             <br>
             <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1;" class="no-print">
-                <h4 style="font-size:13px; margin-bottom:8px;">Tambah Murid Baharu Ke Dalam Kelas:</h4>
+                <h4 style="font-size:13px; margin-bottom:8px;" data-i18n="m-add-title">Tambah Murid Baharu Ke Dalam Kelas:</h4>
                 <div class="form-row">
-                    <input type="text" id="mNama" placeholder="Nama Murid" class="form-control" style="flex:1;">
-                    <input type="text" id="mBapa" placeholder="Nama Ibu Bapa / Penjaga" class="form-control" style="flex:1;">
-                    <input type="text" id="mTel" placeholder="No. Telefon (cth: 012-3456789)" class="form-control" style="flex:1;">
-                    <button onclick="tambahMurid()" class="btn btn-success"><i class="fa-solid fa-user-plus"></i> Tambah Murid</button>
+                    <input type="text" id="mNama" placeholder="Nama Murid" class="form-control" style="flex:1;" data-i18n-ph="ph-student-name">
+                    <input type="text" id="mBapa" placeholder="Nama Ibu Bapa / Penjaga" class="form-control" style="flex:1;" data-i18n-ph="ph-parent-name">
+                    <input type="text" id="mTel" placeholder="No. Telefon (cth: 012-3456789)" class="form-control" style="flex:1;" data-i18n-ph="ph-phone">
+                    <button onclick="tambahMurid()" class="btn btn-success"><i class="fa-solid fa-user-plus"></i> <span data-i18n="btn-add-student">Tambah Murid</span></button>
                 </div>
             </div>
 
             <table style="margin-top:20px;">
                 <thead>
                     <tr>
-                        <th>Bil</th>
-                        <th>Nama Murid</th>
-                        <th>Nama Ibu Bapa / Penjaga</th>
-                        <th>No. Telefon</th>
-                        <th class="no-print">Tindakan</th>
+                        <th data-i18n="th-no">Bil</th>
+                        <th data-i18n="th-student">Nama Murid</th>
+                        <th data-i18n="th-parent">Nama Ibu Bapa / Penjaga</th>
+                        <th data-i18n="th-phone">No. Telefon</th>
+                        <th class="no-print" data-i18n="th-action">Tindakan</th>
                     </tr>
                 </thead>
                 <tbody id="senaraiMuridBody">
@@ -288,23 +288,23 @@
         <!-- 4. MODUL LAPORAN RPH -->
         <div id="section-laporan" class="view-section">
             <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:16px;">
-                <h2 style="font-size:18px; color:#000;">LAPORAN KEHADIRAN & PRESTASI MURID UNTUK RPH</h2>
-                <p style="font-size:12px; color:#555;">SMK PAYA KEMUNTING • GURU: CIKGU ATHIRA</p>
+                <h2 style="font-size:18px; color:#000;" data-i18n="rep-title">LAPORAN KEHADIRAN & PRESTASI MURID UNTUK RPH</h2>
+                <p style="font-size:12px; color:#555;">SMK PAYA KEMUNTING • <span data-i18n="rep-teacher">GURU: CIKGU ATHIRA</span></p>
             </div>
 
             <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:16px;">
-                <div><strong>Kelas:</strong> 3 Gamma</div>
-                <div><strong>Peratus Kehadiran Purata:</strong> <span id="laporanPeratus">0%</span></div>
+                <div><strong data-i18n="label-class">Kelas:</strong> 3 Gamma</div>
+                <div><strong data-i18n="rep-avg">Peratus Kehadiran Purata:</strong> <span id="laporanPeratus">0%</span></div>
             </div>
 
-            <h4>Ringkasan Senarai Murid & Penjaga:</h4>
+            <h4 data-i18n="rep-summary">Ringkasan Senarai Murid & Penjaga:</h4>
             <table id="laporanTable">
                 <thead>
                     <tr>
-                        <th>Bil</th>
-                        <th>Nama Murid</th>
-                        <th>Nama Ibu Bapa / Penjaga</th>
-                        <th>No. Telefon</th>
+                        <th data-i18n="th-no">Bil</th>
+                        <th data-i18n="th-student">Nama Murid</th>
+                        <th data-i18n="th-parent">Nama Ibu Bapa / Penjaga</th>
+                        <th data-i18n="th-phone">No. Telefon</th>
                     </tr>
                 </thead>
                 <tbody id="laporanBody">
@@ -314,19 +314,19 @@
 
             <div style="margin-top:40px; display:flex; justify-content:space-between; font-size:12px;">
                 <div>
-                    <p>Disediakan oleh,</p>
+                    <p data-i18n="sign-prepared">Disediakan oleh,</p>
                     <br><br>
-                    <p>_______________________<br><strong>(CIKGU ATHIRA)</strong><br>Guru Kelas 3 Gamma</p>
+                    <p>_______________________<br><strong>(CIKGU ATHIRA)</strong><br><span data-i18n="role-class-teacher">Guru Kelas 3 Gamma</span></p>
                 </div>
                 <div>
-                    <p>Disahkan oleh,</p>
+                    <p data-i18n="sign-approved">Disahkan oleh,</p>
                     <br><br>
                     <p>_______________________<br><strong>(PENGETUA / PK HEM)</strong><br>SMK Paya Kemunting</p>
                 </div>
             </div>
 
             <div style="margin-top:24px;" class="no-print">
-                <button onclick="window.print()" class="btn btn-dark"><i class="fa-solid fa-print"></i> Cetak Laporan RPH Ini (PDF)</button>
+                <button onclick="window.print()" class="btn btn-dark"><i class="fa-solid fa-print"></i> <span data-i18n="btn-print-rep">Cetak Laporan RPH Ini (PDF)</span></button>
             </div>
         </div>
 
@@ -334,7 +334,167 @@
 
     <!-- JAVASCRIPT SYSTEM LOGIC -->
     <script>
-        // Data Default Permulaan (Format berasingan)
+        // Dictionary Terjemahan Bahasa (BM & English)
+        const translations = {
+            bm: {
+                "top-teacher": "Guru",
+                "top-logout": "Log Keluar",
+                "motto": "Ilmu • Amal • Jaya",
+                "role-portal": "Portal Guru",
+                "nav-dashboard": "Papan Pemuka",
+                "nav-attendance": "Kehadiran",
+                "nav-homework": "Kerja Rumah",
+                "nav-students": "Murid",
+                "nav-reports": "Laporan RPH",
+                "hero-welcome": "Selamat Datang, Cikgu Athira 👋",
+                "hero-subtitle": "Modul Rekod & Peratus Kehadiran Pengajaran (RPH)",
+                "hero-stat-title": "Peratus Kehadiran Terkini",
+                "action-title": "Apakah tindakan yang ingin anda lakukan?",
+                "card1-title": "1. Ambil Kehadiran",
+                "card1-desc": "Tanda dan kemaskini kehadiran murid secara terus.",
+                "card1-link": "Buka Buku Kehadiran →",
+                "card2-title": "2. Semak Kerja Rumah",
+                "card2-desc": "Tambah tugasan baharu & semak status murid.",
+                "card2-link": "Semak Tugasan Murid →",
+                "card3-title": "3. Maklumat Murid",
+                "card3-desc": "Tambah murid baharu atau lihat profil sedia ada.",
+                "card3-link": "Lihat Senarai Murid →",
+                "card4-title": "4. Cetak Laporan RPH",
+                "card4-desc": "Jana laporan kehadiran & latihan untuk cetakan/RPH.",
+                "card4-link": "Buka Laporan & Cetak →",
+                "kh-title": "Modul Kehadiran Harian",
+                "btn-print": "Cetak / Simpan PDF",
+                "label-date": "Tarikh Kehadiran:",
+                "label-class": "Kelas:",
+                "th-no": "Bil",
+                "th-student": "Nama Murid",
+                "th-status": "Status Kehadiran",
+                "th-notes": "Catatan",
+                "kh-rate": "Peratus Kehadiran:",
+                "btn-save-kh": "Simpan Kehadiran",
+                "kr-title": "Rekod Kerja Rumah & Tugasan",
+                "kr-add-title": "Tambah Tugasan / Kerja Rumah Baharu:",
+                "ph-student-name": "Nama Murid",
+                "ph-task-title": "Tajuk Tugasan (cth: Karangan Laporan)",
+                "opt-done": "Selesai",
+                "opt-pending": "Belum Hantar",
+                "btn-add": "Tambah",
+                "th-task": "Tajuk Tugasan",
+                "th-action": "Tindakan",
+                "m-title": "Maklumat & Profil Murid",
+                "m-add-title": "Tambah Murid Baharu Ke Dalam Kelas:",
+                "ph-parent-name": "Nama Ibu Bapa / Penjaga",
+                "ph-phone": "No. Telefon (cth: 012-3456789)",
+                "btn-add-student": "Tambah Murid",
+                "th-parent": "Nama Ibu Bapa / Penjaga",
+                "th-phone": "No. Telefon",
+                "rep-title": "LAPORAN KEHADIRAN & PRESTASI MURID UNTUK RPH",
+                "rep-teacher": "GURU: CIKGU ATHIRA",
+                "rep-avg": "Peratus Kehadiran Purata:",
+                "rep-summary": "Ringkasan Senarai Murid & Penjaga:",
+                "sign-prepared": "Disediakan oleh,",
+                "role-class-teacher": "Guru Kelas 3 Gamma",
+                "sign-approved": "Disahkan oleh,",
+                "btn-print-rep": "Cetak Laporan RPH Ini (PDF)",
+                "opt-present": "Hadir",
+                "opt-absent": "Tidak Hadir",
+                "opt-late": "Lewat"
+            },
+            en: {
+                "top-teacher": "Teacher",
+                "top-logout": "Logout",
+                "motto": "Knowledge • Action • Success",
+                "role-portal": "Teacher Portal",
+                "nav-dashboard": "Dashboard",
+                "nav-attendance": "Attendance",
+                "nav-homework": "Homework",
+                "nav-students": "Students",
+                "nav-reports": "RPH Reports",
+                "hero-welcome": "Welcome, Cikgu Athira 👋",
+                "hero-subtitle": "Lesson Attendance & Record Module (RPH)",
+                "hero-stat-title": "Current Attendance Rate",
+                "action-title": "What would you like to do?",
+                "card1-title": "1. Take Attendance",
+                "card1-desc": "Mark and update student attendance directly.",
+                "card1-link": "Open Attendance Register →",
+                "card2-title": "2. Check Homework",
+                "card2-desc": "Add new assignments & track student status.",
+                "card2-link": "Check Student Tasks →",
+                "card3-title": "3. Student Information",
+                "card3-desc": "Add new students or view existing profiles.",
+                "card3-link": "View Student List →",
+                "card4-title": "4. Print RPH Report",
+                "card4-desc": "Generate attendance & homework reports for printing.",
+                "card4-link": "Open & Print Report →",
+                "kh-title": "Daily Attendance Module",
+                "btn-print": "Print / Save PDF",
+                "label-date": "Attendance Date:",
+                "label-class": "Class:",
+                "th-no": "No.",
+                "th-student": "Student Name",
+                "th-status": "Attendance Status",
+                "th-notes": "Remarks",
+                "kh-rate": "Attendance Rate:",
+                "btn-save-kh": "Save Attendance",
+                "kr-title": "Homework & Assignment Records",
+                "kr-add-title": "Add New Homework / Assignment:",
+                "ph-student-name": "Student Name",
+                "ph-task-title": "Task Title (e.g. Essay Report)",
+                "opt-done": "Completed",
+                "opt-pending": "Pending",
+                "btn-add": "Add",
+                "th-task": "Task Title",
+                "th-action": "Action",
+                "m-title": "Student Details & Profiles",
+                "m-add-title": "Add New Student to Class:",
+                "ph-parent-name": "Parent / Guardian Name",
+                "ph-phone": "Phone No. (e.g. 012-3456789)",
+                "btn-add-student": "Add Student",
+                "th-parent": "Parent / Guardian Name",
+                "th-phone": "Phone No.",
+                "rep-title": "STUDENT ATTENDANCE & PERFORMANCE REPORT FOR RPH",
+                "rep-teacher": "TEACHER: CIKGU ATHIRA",
+                "rep-avg": "Average Attendance Rate:",
+                "rep-summary": "Student & Parent Summary List:",
+                "sign-prepared": "Prepared by,",
+                "role-class-teacher": "Class Teacher 3 Gamma",
+                "sign-approved": "Verified by,",
+                "btn-print-rep": "Print This RPH Report (PDF)",
+                "opt-present": "Present",
+                "opt-absent": "Absent",
+                "opt-late": "Late"
+            }
+        };
+
+        let currentLang = 'bm';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            // Highlight active language button
+            document.getElementById('btn-bm').classList.toggle('active', lang === 'bm');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+
+            // Translate Text Content
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerText = translations[lang][key];
+                }
+            });
+
+            // Translate Input Placeholders
+            document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+                const key = el.getAttribute('data-i18n-ph');
+                if (translations[lang][key]) {
+                    el.placeholder = translations[lang][key];
+                }
+            });
+
+            renderAll();
+        }
+
+        // Data Storage Permulaan
         let muridList = JSON.parse(localStorage.getItem('muridList')) || [
             { nama: "Ahmad Afiq bin Rosli", bapa: "Rosli bin Hassan", tel: "012-3456789" },
             { nama: "Nur Aina Insyirah binti Hazmi", bapa: "Hazmi bin Ahmad", tel: "019-8765432" }
@@ -343,6 +503,8 @@
         let kerjaRumahList = JSON.parse(localStorage.getItem('kerjaRumahList')) || [
             { nama: "Ahmad Afiq bin Rosli", tajuk: "Karangan Laporan", status: "Selesai" }
         ];
+
+        let kehadiranData = JSON.parse(localStorage.getItem('kehadiranData')) || {};
 
         document.getElementById('khTarikh').valueAsDate = new Date();
 
@@ -357,18 +519,16 @@
                 document.getElementById('section-' + sectionId).classList.add('active');
             }
 
-            // Kemaskini Butang Active
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
             renderAll();
         }
 
-        // Render Semua Data
+        // Render Semua Data & Kekalkan Status
         function renderAll() {
-            // Save to LocalStorage
             localStorage.setItem('muridList', JSON.stringify(muridList));
             localStorage.setItem('kerjaRumahList', JSON.stringify(kerjaRumahList));
+            localStorage.setItem('kehadiranData', JSON.stringify(kehadiranData));
 
-            // Render Murid
             let mBody = document.getElementById('senaraiMuridBody');
             let lapBody = document.getElementById('laporanBody');
             let khBody = document.getElementById('senaraiKehadiranBody');
@@ -377,9 +537,24 @@
             lapBody.innerHTML = '';
             khBody.innerHTML = '';
 
+            let tarikhSemasa = document.getElementById('khTarikh').value || new Date().toISOString().split('T')[0];
+
+            let optPresent = translations[currentLang]['opt-present'];
+            let optAbsent = translations[currentLang]['opt-absent'];
+            let optLate = translations[currentLang]['opt-late'];
+
             muridList.forEach((m, index) => {
                 let namaBapa = m.bapa || '-';
                 let noTel = m.tel || '-';
+
+                // Semak status tersimpan
+                let statusTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) 
+                    ? kehadiranData[tarikhSemasa][m.nama].status 
+                    : 'Hadir';
+                
+                let catatanTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) 
+                    ? kehadiranData[tarikhSemasa][m.nama].catatan 
+                    : '';
 
                 mBody.innerHTML += `
                     <tr>
@@ -403,13 +578,13 @@
                         <td>${index + 1}</td>
                         <td>${m.nama}</td>
                         <td>
-                            <select class="form-control kh-status" onchange="kiraPeratus()">
-                                <option value="Hadir">Hadir</option>
-                                <option value="Tidak Hadir">Tidak Hadir</option>
-                                <option value="Lewat">Lewat</option>
+                            <select class="form-control kh-status" data-nama="${m.nama}" onchange="kiraPeratus()">
+                                <option value="Hadir" ${statusTersimpan === 'Hadir' ? 'selected' : ''}>${optPresent}</option>
+                                <option value="Tidak Hadir" ${statusTersimpan === 'Tidak Hadir' ? 'selected' : ''}>${optAbsent}</option>
+                                <option value="Lewat" ${statusTersimpan === 'Lewat' ? 'selected' : ''}>${optLate}</option>
                             </select>
                         </td>
-                        <td><input type="text" placeholder="Catatan" class="form-control"></td>
+                        <td><input type="text" placeholder="${currentLang === 'bm' ? 'Catatan' : 'Remarks'}" class="form-control kh-catatan" data-nama="${m.nama}" value="${catatanTersimpan}"></td>
                     </tr>`;
             });
 
@@ -417,13 +592,16 @@
             let krBody = document.getElementById('senaraiKRBody');
             krBody.innerHTML = '';
             kerjaRumahList.forEach((kr, index) => {
-                let statusColor = kr.status === 'Selesai' ? 'green' : 'red';
+                let isDone = kr.status === 'Selesai' || kr.status === 'Completed';
+                let statusColor = isDone ? 'green' : 'red';
+                let displayStatus = isDone ? translations[currentLang]['opt-done'] : translations[currentLang]['opt-pending'];
+
                 krBody.innerHTML += `
                     <tr>
                         <td>${index + 1}</td>
                         <td>${kr.nama}</td>
                         <td>${kr.tajuk}</td>
-                        <td><span style="color:${statusColor}; font-weight:bold;">${kr.status}</span></td>
+                        <td><span style="color:${statusColor}; font-weight:bold;">${displayStatus}</span></td>
                         <td class="no-print"><button onclick="padamKR(${index})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>`;
             });
@@ -431,7 +609,7 @@
             kiraPeratus();
         }
 
-        // Fungsi Tambah Data Murid (Lajur Terpisah)
+        // Tambah Data Murid
         function tambahMurid() {
             let nama = document.getElementById('mNama').value;
             let bapa = document.getElementById('mBapa').value;
@@ -444,7 +622,7 @@
                 document.getElementById('mTel').value = '';
                 renderAll();
             } else {
-                alert('Sila masukkan nama murid.');
+                alert(currentLang === 'bm' ? 'Sila masukkan nama murid.' : 'Please enter student name.');
             }
         }
 
@@ -470,6 +648,7 @@
             renderAll();
         }
 
+        // Kira Peratus Kehadiran
         function kiraPeratus() {
             let selects = document.querySelectorAll('.kh-status');
             if(selects.length === 0) return;
@@ -485,9 +664,46 @@
             document.getElementById('laporanPeratus').innerText = peratus + '%';
         }
 
+        // Simpan Kehadiran ke Storage
         function simpanKehadiran() {
-            alert('Kehadiran hari ini berjaya disimpan!');
+            let tarikh = document.getElementById('khTarikh').value;
+            if(!tarikh) {
+                alert(currentLang === 'bm' ? 'Sila pilih tarikh terlebih dahulu.' : 'Please select a date.');
+                return;
+            }
+
+            if(!kehadiranData[tarikh]) {
+                kehadiranData[tarikh] = {};
+            }
+
+            let statusSelects = document.querySelectorAll('.kh-status');
+            let catatanInputs = document.querySelectorAll('.kh-catatan');
+
+            statusSelects.forEach((select, index) => {
+                let namaMurid = select.getAttribute('data-nama');
+                let statusVal = select.value;
+                let catatanVal = catatanInputs[index].value;
+
+                kehadiranData[tarikh][namaMurid] = {
+                    status: statusVal,
+                    catatan: catatanVal
+                };
+            });
+
+            localStorage.setItem('kehadiranData', JSON.stringify(kehadiranData));
+            
+            let msg = currentLang === 'bm' 
+                ? 'Kehadiran bagi tarikh ' + tarikh + ' berjaya disimpan!' 
+                : 'Attendance for ' + tarikh + ' has been saved successfully!';
+            alert(msg);
+            
+            kiraPeratus();
         }
+
+        // Muat turun rekod jika tarikh ditukar
+        document.getElementById('khTarikh').addEventListener('change', function() {
+            renderAll();
+        });
 
         // Init Pertama
         renderAll();
