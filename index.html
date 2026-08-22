@@ -65,7 +65,7 @@
         .form-group { margin-bottom: 12px; }
         .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
         .form-control { width: 100%; padding: 8px 12px; font-size: 13px; border: 1px solid #cbd5e1; border-radius: 6px; }
-        .form-row { display: flex; gap: 12px; }
+        .form-row { display: flex; gap: 12px; flex-wrap: wrap; }
         .btn { padding: 8px 16px; border-radius: 6px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
         .btn-primary { background: #1e40af; color: white; }
         .btn-dark { background: #0f172a; color: white; }
@@ -229,9 +229,9 @@
             <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1;" class="no-print">
                 <h4 style="font-size:13px; margin-bottom:8px;">Tambah Tugasan / Kerja Rumah Baharu:</h4>
                 <div class="form-row">
-                    <input type="text" id="krNama" placeholder="Nama Murid" class="form-control">
-                    <input type="text" id="krTajuk" placeholder="Tajuk Tugasan (cth: Karangan Laporan)" class="form-control">
-                    <select id="krStatus" class="form-control">
+                    <input type="text" id="krNama" placeholder="Nama Murid" class="form-control" style="flex:1;">
+                    <input type="text" id="krTajuk" placeholder="Tajuk Tugasan (cth: Karangan Laporan)" class="form-control" style="flex:1;">
+                    <select id="krStatus" class="form-control" style="flex:1;">
                         <option value="Selesai">Selesai</option>
                         <option value="Belum Hantar">Belum Hantar</option>
                     </select>
@@ -262,8 +262,9 @@
             <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1;" class="no-print">
                 <h4 style="font-size:13px; margin-bottom:8px;">Tambah Murid Baharu Ke Dalam Kelas:</h4>
                 <div class="form-row">
-                    <input type="text" id="mNama" placeholder="Nama Full Murid" class="form-control">
-                    <input type="text" id="mBapa" placeholder="Nama & No Tel Ibu Bapa" class="form-control">
+                    <input type="text" id="mNama" placeholder="Nama Murid" class="form-control" style="flex:1;">
+                    <input type="text" id="mBapa" placeholder="Nama Ibu Bapa / Penjaga" class="form-control" style="flex:1;">
+                    <input type="text" id="mTel" placeholder="No. Telefon (cth: 012-3456789)" class="form-control" style="flex:1;">
                     <button onclick="tambahMurid()" class="btn btn-success"><i class="fa-solid fa-user-plus"></i> Tambah Murid</button>
                 </div>
             </div>
@@ -273,7 +274,8 @@
                     <tr>
                         <th>Bil</th>
                         <th>Nama Murid</th>
-                        <th>Maklumat Penjaga</th>
+                        <th>Nama Ibu Bapa / Penjaga</th>
+                        <th>No. Telefon</th>
                         <th class="no-print">Tindakan</th>
                     </tr>
                 </thead>
@@ -295,13 +297,14 @@
                 <div><strong>Peratus Kehadiran Purata:</strong> <span id="laporanPeratus">0%</span></div>
             </div>
 
-            <h4>Ringkasan Senarai Murid & Kehadiran:</h4>
+            <h4>Ringkasan Senarai Murid & Penjaga:</h4>
             <table id="laporanTable">
                 <thead>
                     <tr>
                         <th>Bil</th>
                         <th>Nama Murid</th>
-                        <th>Maklumat Penjaga</th>
+                        <th>Nama Ibu Bapa / Penjaga</th>
+                        <th>No. Telefon</th>
                     </tr>
                 </thead>
                 <tbody id="laporanBody">
@@ -331,10 +334,10 @@
 
     <!-- JAVASCRIPT SYSTEM LOGIC -->
     <script>
-        // Data Default Permulaan
+        // Data Default Permulaan (Format berasingan)
         let muridList = JSON.parse(localStorage.getItem('muridList')) || [
-            { nama: "Ahmad Afiq bin Rosli", bapa: "Rosli (012-3456789)" },
-            { nama: "Nur Aina Insyirah binti Hazmi", bapa: "Hazmi (019-8765432)" }
+            { nama: "Ahmad Afiq bin Rosli", bapa: "Rosli bin Hassan", tel: "012-3456789" },
+            { nama: "Nur Aina Insyirah binti Hazmi", bapa: "Hazmi bin Ahmad", tel: "019-8765432" }
         ];
 
         let kerjaRumahList = JSON.parse(localStorage.getItem('kerjaRumahList')) || [
@@ -375,11 +378,15 @@
             khBody.innerHTML = '';
 
             muridList.forEach((m, index) => {
+                let namaBapa = m.bapa || '-';
+                let noTel = m.tel || '-';
+
                 mBody.innerHTML += `
                     <tr>
                         <td>${index + 1}</td>
                         <td><strong>${m.nama}</strong></td>
-                        <td>${m.bapa}</td>
+                        <td>${namaBapa}</td>
+                        <td>${noTel}</td>
                         <td class="no-print"><button onclick="padamMurid(${index})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
                     </tr>`;
 
@@ -387,7 +394,8 @@
                     <tr>
                         <td>${index + 1}</td>
                         <td>${m.nama}</td>
-                        <td>${m.bapa}</td>
+                        <td>${namaBapa}</td>
+                        <td>${noTel}</td>
                     </tr>`;
 
                 khBody.innerHTML += `
@@ -423,15 +431,20 @@
             kiraPeratus();
         }
 
-        // Fungsi Tambah Data
+        // Fungsi Tambah Data Murid (Lajur Terpisah)
         function tambahMurid() {
             let nama = document.getElementById('mNama').value;
             let bapa = document.getElementById('mBapa').value;
+            let tel = document.getElementById('mTel').value;
+
             if(nama) {
-                muridList.push({ nama: nama, bapa: bapa || '-' });
+                muridList.push({ nama: nama, bapa: bapa || '-', tel: tel || '-' });
                 document.getElementById('mNama').value = '';
                 document.getElementById('mBapa').value = '';
+                document.getElementById('mTel').value = '';
                 renderAll();
+            } else {
+                alert('Sila masukkan nama murid.');
             }
         }
 
