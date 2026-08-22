@@ -8,10 +8,14 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
         .container { max-width: 900px; margin: 0 auto; }
         .header { background: #800000; color: white; padding: 20px; border-radius: 10px; text-align: center; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
         .card h3 { margin-top: 0; color: #333; }
-        .btn { display: inline-block; padding: 10px 15px; background: #800000; color: white; text-decoration: none; border-radius: 5px; margin-top: 10px; }
+        .btn { display: inline-block; padding: 10px 15px; background: #800000; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        .btn:hover { background: #600000; }
+        .content-section { display: none; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .active { display: block; }
+        .btn-back { background: #555; margin-bottom: 15px; }
     </style>
 </head>
 <body>
@@ -21,28 +25,76 @@
             <p>Portal Pengurusan Praktikum Perguruan 2026</p>
         </div>
 
-        <div class="grid">
+        <!-- DASHBOARD UTAMA -->
+        <div id="dashboard" class="grid">
             <div class="card">
                 <h3>📋 Kehadiran</h3>
                 <p>Rekod kehadiran harian murid kelas.</p>
-                <a href="#" class="btn">Ambil Kehadiran</a>
+                <button class="btn" onclick="openTab('kehadiran')">Ambil Kehadiran</button>
             </div>
             <div class="card">
                 <h3>📚 Kerja Rumah</h3>
                 <p>Semak status penghantaran tugasan.</p>
-                <a href="#" class="btn">Semak Tugasan</a>
+                <button class="btn" onclick="openTab('tugasan')">Semak Tugasan</button>
             </div>
             <div class="card">
                 <h3>👨‍🎓 Maklumat Murid</h3>
                 <p>Senarai nama & profil murid.</p>
-                <a href="#" class="btn">Lihat Senarai</a>
+                <button class="btn" onclick="openTab('murid')">Lihat Senarai</button>
             </div>
             <div class="card">
                 <h3>🖨️ Laporan</h3>
                 <p>Cetak laporan bulanan & analisis.</p>
-                <a href="#" class="btn">Buka Laporan</a>
+                <button class="btn" onclick="openTab('laporan')">Buka Laporan</button>
             </div>
         </div>
+
+        <!-- SEKSYEN KEHADIRAN -->
+        <div id="kehadiran" class="content-section">
+            <button class="btn btn-back" onclick="goHome()">⬅️ Kembali ke Dashboard</button>
+            <h2>📋 Modul Kehadiran Murid</h2>
+            <p>Ruang untuk tanda kehadiran harian murid kelas anda.</p>
+        </div>
+
+        <!-- SEKSYEN TUGASAN -->
+        <div id="tugasan" class="content-section">
+            <button class="btn btn-back" onclick="goHome()">⬅️ Kembali ke Dashboard</button>
+            <h2>📚 Semakan Kerja Rumah</h2>
+            <p>Senarai tugasan murid dan rekod penghantaran.</p>
+        </div>
+
+        <!-- SEKSYEN MURID -->
+        <div id="murid" class="content-section">
+            <button class="btn btn-back" onclick="goHome()">⬅️ Kembali ke Dashboard</button>
+            <h2>👨‍🎓 Senarai Maklumat Murid</h2>
+            <p>Profil murid, nombor telefon penjaga, dan catatan perkembangan.</p>
+        </div>
+
+        <!-- SEKSYEN LAPORAN -->
+        <div id="laporan" class="content-section">
+            <button class="btn btn-back" onclick="goHome()">⬅️ Kembali ke Dashboard</button>
+            <h2>🖨️ Laporan & Analisis</h2>
+            <p>Cetak penyata kehadiran bulanan dan analisis prestasi murid.</p>
+        </div>
     </div>
+
+    <script>
+        function openTab(tabId) {
+            document.getElementById('dashboard').style.display = 'none';
+            var sections = document.getElementsByClassName('content-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById(tabId).classList.add('active');
+        }
+
+        function goHome() {
+            var sections = document.getElementsByClassName('content-section');
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].classList.remove('active');
+            }
+            document.getElementById('dashboard').style.display = 'grid';
+        }
+    </script>
 </body>
 </html>
