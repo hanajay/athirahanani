@@ -3,391 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e-System Pro — Sistem Kehadiran & Kerja Rumah</title>
+    <title>e-Kemunting Pro — Portal Cikgu Athira</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        body {
-            background-color: #f4f5f7;
-            color: #333;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #f4f5f7; color: #333; }
 
         /* Top Admin Bar */
-        .top-bar {
-            background: #0f172a; /* Corporate Dark Blue */
-            color: #fff;
-            padding: 8px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
-        }
-
-        .lang-toggle {
-            display: flex;
-            gap: 4px;
-            background: #1e293b;
-            padding: 3px;
-            border-radius: 20px;
-        }
-
-        .lang-btn {
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            padding: 3px 10px;
-            border-radius: 15px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .lang-btn.active {
-            background: #2563eb; /* Corporate Blue */
-            color: #fff;
-        }
-
-        .top-nav-links {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            color: #94a3b8;
-        }
-
-        .top-nav-links a {
-            color: #94a3b8;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .top-nav-links a:hover {
-            color: #ffffff;
-        }
+        .top-bar { background: #0f172a; color: #fff; padding: 8px 24px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        .lang-toggle { display: flex; gap: 4px; background: #1e293b; padding: 3px; border-radius: 20px; }
+        .lang-btn { background: transparent; border: none; color: #94a3b8; padding: 3px 10px; border-radius: 15px; cursor: pointer; font-size: 11px; font-weight: 600; }
+        .lang-btn.active { background: #2563eb; color: #fff; }
+        .top-nav-links { display: flex; align-items: center; gap: 16px; color: #94a3b8; }
+        .top-nav-links a { color: #94a3b8; text-decoration: none; }
 
         /* Header Main */
-        header {
-            background: #fff;
-            padding: 12px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            width: 36px;
-            height: 36px;
-            background: #1e40af; /* Corporate Blue Primary */
-            color: #fff;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .logo-title h1 {
-            font-size: 18px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .badge-smk {
-            background: #1e40af;
-            color: #fff;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 4px;
-        }
-
-        .logo-title p {
-            font-size: 11px;
-            color: #64748b;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .icon-bell {
-            position: relative;
-            font-size: 18px;
-            color: #475569;
-            cursor: pointer;
-        }
-
-        .icon-bell::after {
-            content: '';
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 8px;
-            height: 8px;
-            background: #ef4444;
-            border-radius: 50%;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: #dbeafe;
-            color: #1e40af;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-weight: 700;
-        }
-
-        .user-details h4 {
-            font-size: 13px;
-            font-weight: 700;
-        }
-
-        .user-details p {
-            font-size: 11px;
-            color: #64748b;
-        }
+        header { background: #fff; padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; }
+        .logo-section { display: flex; align-items: center; gap: 12px; }
+        .logo-icon { width: 36px; height: 36px; background: #1e40af; color: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        .logo-title h1 { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .badge-smk { background: #1e40af; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+        .logo-title p { font-size: 11px; color: #64748b; }
+        .user-profile { display: flex; align-items: center; gap: 16px; }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; background: #dbeafe; color: #1e40af; display: flex; align-items: center; justify-content: center; font-weight: 700; }
 
         /* Navigation Bar */
-        .nav-bar {
-            background: #fff;
-            padding: 0 24px;
-            display: flex;
-            gap: 8px;
-            border-bottom: 1px solid #e2e8f0;
-            overflow-x: auto;
-        }
-
-        .nav-item {
-            padding: 12px 16px;
-            text-decoration: none;
-            color: #475569;
-            font-size: 13px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border-bottom: 2px solid transparent;
-        }
-
-        .nav-item:hover {
-            color: #1e40af;
-        }
-
-        .nav-item.active {
-            background: #1e40af; /* Corporate Blue */
-            color: #fff;
-            border-radius: 8px 8px 0 0;
-        }
+        .nav-bar { background: #fff; padding: 0 24px; display: flex; gap: 8px; border-bottom: 1px solid #e2e8f0; overflow-x: auto; }
+        .nav-btn { padding: 12px 16px; border: none; background: transparent; color: #475569; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 8px; cursor: pointer; border-bottom: 2px solid transparent; }
+        .nav-btn.active { background: #1e40af; color: #fff; border-radius: 8px 8px 0 0; }
 
         /* Container Content */
-        .container {
-            max-width: 1100px;
-            margin: 20px auto;
-            padding: 0 16px;
-        }
+        .container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
 
         /* Banner Hero */
-        .hero-banner {
-            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); /* Corporate Blue Gradient */
-            color: #fff;
-            border-radius: 16px;
-            padding: 24px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.1);
-        }
-
-        .hero-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-
-        .hero-logo {
-            width: 50px;
-            height: 50px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .hero-text span {
-            font-size: 11px;
-            letter-spacing: 0.5px;
-            opacity: 0.8;
-            font-weight: 600;
-        }
-
-        .hero-text h2 {
-            font-size: 22px;
-            margin: 4px 0;
-            font-weight: 700;
-        }
-
-        .hero-text p {
-            font-size: 12px;
-            opacity: 0.85;
-        }
-
-        .hero-stat {
-            background: rgba(255,255,255,0.1);
-            padding: 12px 20px;
-            border-radius: 12px;
-            text-align: right;
-            backdrop-filter: blur(4px);
-        }
-
-        .hero-stat span {
-            font-size: 10px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .hero-stat h3 {
-            font-size: 28px;
-            font-weight: 700;
-        }
+        .hero-banner { background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%); color: #fff; border-radius: 16px; padding: 24px 32px; display: flex; justify-content: space-between; align-items: center; }
+        .hero-text h2 { font-size: 22px; margin: 4px 0; font-weight: 700; }
+        .hero-stat { background: rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 12px; text-align: right; backdrop-filter: blur(4px); }
+        .hero-stat h3 { font-size: 28px; font-weight: 700; }
 
         /* Section Action Cards */
-        .section-title {
-            font-size: 15px;
-            font-weight: 700;
-            margin: 24px 0 16px 0;
-            color: #1e293b;
-        }
-
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-        }
-
-        .card {
-            background: #fff;
-            padding: 20px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            gap: 16px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-            text-decoration: none;
-            color: inherit;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        .card-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
+        .section-title { font-size: 15px; font-weight: 700; margin: 24px 0 16px 0; color: #1e293b; }
+        .grid-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+        .card { background: #fff; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; display: flex; gap: 16px; cursor: pointer; transition: 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .card-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
         .icon-green { background: #dcfce7; color: #16a34a; }
         .icon-blue { background: #dbeafe; color: #2563eb; }
         .icon-purple { background: #f3e8ff; color: #9333ea; }
         .icon-orange { background: #ffedd5; color: #ea580c; }
+        .card-content h3 { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
+        .card-content p { font-size: 11px; color: #64748b; margin-bottom: 8px; }
+        .card-link { font-size: 11px; font-weight: 600; color: #2563eb; }
 
-        .card-content h3 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        /* Dynamic Views / Sections */
+        .view-section { display: none; background: #fff; padding: 24px; border-radius: 12px; border: 1px solid #e2e8f0; margin-top: 20px; }
+        .view-section.active { display: block; }
+        
+        /* Form Inputs & Tables */
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
+        .form-control { width: 100%; padding: 8px 12px; font-size: 13px; border: 1px solid #cbd5e1; border-radius: 6px; }
+        .form-row { display: flex; gap: 12px; }
+        .btn { padding: 8px 16px; border-radius: 6px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-primary { background: #1e40af; color: white; }
+        .btn-dark { background: #0f172a; color: white; }
+        .btn-success { background: #16a34a; color: white; }
 
-        .badge-num {
-            background: #dbeafe;
-            color: #1d4ed8;
-            font-size: 10px;
-            padding: 1px 6px;
-            border-radius: 10px;
-        }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; font-size: 13px; }
+        th { background: #f8fafc; }
 
-        .card-content p {
-            font-size: 11px;
-            color: #64748b;
-            line-height: 1.4;
-            margin-bottom: 8px;
-        }
-
-        .card-link {
-            font-size: 11px;
-            font-weight: 600;
-            color: #2563eb;
-            text-decoration: none;
-        }
-
-        /* Alert Section */
-        .alert-card {
-            background: #fff;
-            border: 1px solid #fee2e2;
-            border-radius: 12px;
-            padding: 16px;
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .alert-icon {
-            width: 32px;
-            height: 32px;
-            background: #ef4444;
-            color: #fff;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        .alert-text h4 {
-            font-size: 13px;
-            color: #991b1b;
+        /* Print Style optimization for RPH */
+        @media print {
+            .no-print, .top-bar, header, .nav-bar, .hero-banner, .grid-cards, .section-title { display: none !important; }
+            body { background: white; padding: 0; }
+            .container { max-width: 100%; margin: 0; padding: 0; }
+            .view-section { display: block !important; border: none; padding: 0; }
+            .print-only { display: block !important; }
         }
     </style>
 </head>
@@ -400,11 +94,8 @@
             <button class="lang-btn">English</button>
         </div>
         <div class="top-nav-links">
-            <a href="profil-guru.html"><i class="fa-solid fa-user-tie"></i> Guru</a>
-            <a href="login.html">Log Keluar</a>
-            <a href="#"><i class="fa-solid fa-download"></i> Salinan</a>
-            <a href="#">Pulih</a>
-            <a href="#"><i class="fa-solid fa-rotate-right"></i> Set Semula Data</a>
+            <a href="#"><i class="fa-solid fa-user-tie"></i> Guru</a>
+            <a href="#">Log Keluar</a>
         </div>
     </div>
 
@@ -413,108 +104,380 @@
         <div class="logo-section">
             <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="logo-title">
-                <h1>e-System Pro <span class="badge-smk">SMK </span></h1>
+                <h1>e-Kemunting Pro <span class="badge-smk">SMKPK</span></h1>
                 <p>SMK Paya Kemunting • Ilmu • Amal • Jaya</p>
             </div>
         </div>
         <div class="user-profile">
-            <i class="fa-regular fa-bell icon-bell"></i>
-            <div class="user-info">
-                <div class="avatar">CA</div>
-                <div class="user-details">
-                    <h4>Cikgu Athira</h4>
-                    <p>Portal Guru</p>
-                </div>
+            <div class="avatar">CA</div>
+            <div>
+                <h4 style="font-size:13px; font-weight:700;">Cikgu Athira</h4>
+                <p style="font-size:11px; color:#64748b;">Portal Guru</p>
             </div>
         </div>
     </header>
 
     <!-- Navigation Bar -->
-    <div class="nav-bar">
-        <a href="index.html" class="nav-item active"><i class="fa-solid fa-border-all"></i> Papan Pemuka</a>
-        <a href="kehadiran.html" class="nav-item"><i class="fa-regular fa-calendar-check"></i> Kehadiran</a>
-        <a href="kerja-rumah.html" class="nav-item"><i class="fa-regular fa-folder-open"></i> Kerja Rumah</a>
-        <a href="peperiksaan.html" class="nav-item"><i class="fa-solid fa-chart-line"></i> Peperiksaan</a>
-        <a href="jadual.html" class="nav-item"><i class="fa-regular fa-clock"></i> Jadual</a>
-        <a href="murid.html" class="nav-item"><i class="fa-solid fa-users"></i> Murid</a>
-        <a href="kelas.html" class="nav-item"><i class="fa-regular fa-building"></i> Kelas</a>
-        <a href="anugerah.html" class="nav-item"><i class="fa-solid fa-award"></i> Anugerah</a>
-        <a href="laporan.html" class="nav-item"><i class="fa-solid fa-chart-bar"></i> Laporan</a>
+    <div class="nav-bar no-print">
+        <button class="nav-btn active" onclick="showSection('dashboard')"><i class="fa-solid fa-border-all"></i> Papan Pemuka</button>
+        <button class="nav-btn" onclick="showSection('kehadiran')"><i class="fa-regular fa-calendar-check"></i> Kehadiran</button>
+        <button class="nav-btn" onclick="showSection('kerjarumah')"><i class="fa-regular fa-folder-open"></i> Kerja Rumah</button>
+        <button class="nav-btn" onclick="showSection('murid')"><i class="fa-solid fa-users"></i> Murid</button>
+        <button class="nav-btn" onclick="showSection('laporan')"><i class="fa-solid fa-chart-bar"></i> Laporan RPH</button>
     </div>
 
     <!-- Main Content Container -->
     <div class="container">
 
-        <!-- Banner Hero -->
-        <div class="hero-banner">
-            <div class="hero-left">
-                <div class="hero-logo"><i class="fa-solid fa-shield-halved"></i></div>
-                <div class="hero-text">
-                    <span>SMK  (SMKPK) • ILMU • AMAL • JAYA</span>
+        <!-- DASHBOARD VIEW -->
+        <div id="section-dashboard">
+            <div class="hero-banner">
+                <div>
+                    <span style="font-size:11px; opacity:0.8;">SMK PAYA KEMUNTING • ILMU • AMAL • JAYA</span>
                     <h2>Selamat Datang, Cikgu Athira 👋</h2>
-                    <p>SMK  • Anda menguruskan 3 buah kelas dengan 6 orang murid berdaftar.</p>
+                    <p style="font-size:12px; opacity:0.85;">Modul Rekod & Peratus Kehadiran Pengajaran (RPH)</p>
+                </div>
+                <div class="hero-stat">
+                    <span style="font-size:10px;">Peratus Kehadiran Terkini</span>
+                    <h3 id="statPeratus">0%</h3>
                 </div>
             </div>
-            <div class="hero-stat">
-                <span>Peratus Kehadiran Sekolah</span>
-                <h3>86%</h3>
+
+            <div class="section-title">Apakah tindakan yang ingin anda lakukan?</div>
+
+            <div class="grid-cards">
+                <div class="card" onclick="showSection('kehadiran')">
+                    <div class="card-icon icon-green"><i class="fa-regular fa-clipboard"></i></div>
+                    <div class="card-content">
+                        <h3>1. Ambil Kehadiran</h3>
+                        <p>Tanda dan kemaskini kehadiran murid secara terus.</p>
+                        <span class="card-link">Buka Buku Kehadiran →</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showSection('kerjarumah')">
+                    <div class="card-icon icon-blue"><i class="fa-solid fa-book"></i></div>
+                    <div class="card-content">
+                        <h3>2. Semak Kerja Rumah</h3>
+                        <p>Tambah tugasan baharu & semak status murid.</p>
+                        <span class="card-link">Semak Tugasan Murid →</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showSection('murid')">
+                    <div class="card-icon icon-purple"><i class="fa-solid fa-user-group"></i></div>
+                    <div class="card-content">
+                        <h3>3. Maklumat Murid</h3>
+                        <p>Tambah murid baharu atau lihat profil sedia ada.</p>
+                        <span class="card-link">Lihat Senarai Murid →</span>
+                    </div>
+                </div>
+
+                <div class="card" onclick="showSection('laporan')">
+                    <div class="card-icon icon-orange"><i class="fa-solid fa-print"></i></div>
+                    <div class="card-content">
+                        <h3>4. Cetak Laporan RPH</h3>
+                        <p>Jana laporan kehadiran & latihan untuk cetakan/RPH.</p>
+                        <span class="card-link">Buka Laporan & Cetak →</span>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Section Action Cards -->
-        <div class="section-title">Apakah tindakan yang ingin anda lakukan?</div>
+        <!-- 1. MODUL KEHADIRAN -->
+        <div id="section-kehadiran" class="view-section">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h2><i class="fa-regular fa-calendar-check"></i> Modul Kehadiran Harian</h2>
+                <button onclick="window.print()" class="btn btn-dark no-print"><i class="fa-solid fa-print"></i> Cetak / Simpan PDF</button>
+            </div>
 
-        <div class="grid-cards">
-            <!-- Card 1 -->
-            <a href="kehadiran.html" class="card">
-                <div class="card-icon icon-green"><i class="fa-regular fa-clipboard"></i></div>
-                <div class="card-content">
-                    <h3>1. Ambil Kehadiran</h3>
-                    <p>Tanda murid Hadir, Tidak Hadir, atau Lewat dengan 1-klik pantas.</p>
-                    <span class="card-link">Buka Buku Kehadiran →</span>
+            <div class="form-row" style="margin-bottom:16px;">
+                <div class="form-group" style="flex:1;">
+                    <label>Tarikh Kehadiran:</label>
+                    <input type="date" id="khTarikh" class="form-control">
                 </div>
-            </a>
+                <div class="form-group" style="flex:1;">
+                    <label>Kelas:</label>
+                    <input type="text" value="3 Gamma" class="form-control" readonly>
+                </div>
+            </div>
 
-            <!-- Card 2 -->
-            <a href="kerja-rumah.html" class="card">
-                <div class="card-icon icon-blue"><i class="fa-solid fa-book"></i></div>
-                <div class="card-content">
-                    <h3>2. Semak Kerja Rumah <span class="badge-num">3</span></h3>
-                    <p>Semak status penghantaran murid, beri markah dan ulasan.</p>
-                    <span class="card-link">Semak Tugasan Murid →</span>
-                </div>
-            </a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bil</th>
+                        <th>Nama Murid</th>
+                        <th>Status Kehadiran</th>
+                        <th>Catatan</th>
+                    </tr>
+                </thead>
+                <tbody id="senaraiKehadiranBody">
+                    <!-- Data dimasukkan secara automatik -->
+                </tbody>
+            </table>
 
-            <!-- Card 3 -->
-            <a href="murid.html" class="card">
-                <div class="card-icon icon-purple"><i class="fa-solid fa-user-group"></i></div>
-                <div class="card-content">
-                    <h3>3. Maklumat Murid</h3>
-                    <p>Lihat kad profil murid, nombor telefon ibu bapa dan catatan guru.</p>
-                    <span class="card-link">Lihat Senarai Murid (6) →</span>
-                </div>
-            </a>
-
-            <!-- Card 4 -->
-            <a href="laporan.html" class="card">
-                <div class="card-icon icon-orange"><i class="fa-solid fa-print"></i></div>
-                <div class="card-content">
-                    <h3>4. Cetak Laporan</h3>
-                    <p>Cetak penyata kehadiran bulanan atau kad pelaporan kemajuan murid.</p>
-                    <span class="card-link">Buka Laporan & Cetak →</span>
-                </div>
-            </a>
+            <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+                <div><strong>Peratus Kehadiran: <span id="khPeratusText" style="color:#1e40af; font-size:16px;">0%</span></strong></div>
+                <button onclick="simpanKehadiran()" class="btn btn-primary no-print"><i class="fa-solid fa-floppy-disk"></i> Simpan Kehadiran</button>
+            </div>
         </div>
 
-        <!-- Alert Section -->
-        <div class="alert-card">
-            <div class="alert-icon">!</div>
-            <div class="alert-text">
-                <h4>Perlu Perhatian Guru</h4>
+        <!-- 2. MODUL KERJA RUMAH -->
+        <div id="section-kerjarumah" class="view-section">
+            <h2><i class="fa-solid fa-book"></i> Rekod Kerja Rumah & Tugasan</h2>
+            <br>
+            <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1;" class="no-print">
+                <h4 style="font-size:13px; margin-bottom:8px;">Tambah Tugasan / Kerja Rumah Baharu:</h4>
+                <div class="form-row">
+                    <input type="text" id="krNama" placeholder="Nama Murid" class="form-control">
+                    <input type="text" id="krTajuk" placeholder="Tajuk Tugasan (cth: Karangan Laporan)" class="form-control">
+                    <select id="krStatus" class="form-control">
+                        <option value="Selesai">Selesai</option>
+                        <option value="Belum Hantar">Belum Hantar</option>
+                    </select>
+                    <button onclick="tambahKerjaRumah()" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah</button>
+                </div>
+            </div>
+
+            <table style="margin-top:20px;">
+                <thead>
+                    <tr>
+                        <th>Bil</th>
+                        <th>Nama Murid</th>
+                        <th>Tajuk Tugasan</th>
+                        <th>Status</th>
+                        <th class="no-print">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="senaraiKRBody">
+                    <!-- Data Tugasan -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 3. MODUL MAKLUMAT MURID -->
+        <div id="section-murid" class="view-section">
+            <h2><i class="fa-solid fa-users"></i> Maklumat & Profil Murid</h2>
+            <br>
+            <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1;" class="no-print">
+                <h4 style="font-size:13px; margin-bottom:8px;">Tambah Murid Baharu Ke Dalam Kelas:</h4>
+                <div class="form-row">
+                    <input type="text" id="mNama" placeholder="Nama Full Murid" class="form-control">
+                    <input type="text" id="mBapa" placeholder="Nama & No Tel Ibu Bapa" class="form-control">
+                    <button onclick="tambahMurid()" class="btn btn-success"><i class="fa-solid fa-user-plus"></i> Tambah Murid</button>
+                </div>
+            </div>
+
+            <table style="margin-top:20px;">
+                <thead>
+                    <tr>
+                        <th>Bil</th>
+                        <th>Nama Murid</th>
+                        <th>Maklumat Penjaga</th>
+                        <th class="no-print">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="senaraiMuridBody">
+                    <!-- Data Murid -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 4. MODUL LAPORAN RPH -->
+        <div id="section-laporan" class="view-section">
+            <div style="text-align:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:16px;">
+                <h2 style="font-size:18px; color:#000;">LAPORAN KEHADIRAN & PRESTASI MURID UNTUK RPH</h2>
+                <p style="font-size:12px; color:#555;">SMK PAYA KEMUNTING • GURU: CIKGU ATHIRA</p>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:16px;">
+                <div><strong>Kelas:</strong> 3 Gamma</div>
+                <div><strong>Peratus Kehadiran Purata:</strong> <span id="laporanPeratus">0%</span></div>
+            </div>
+
+            <h4>Ringkasan Senarai Murid & Kehadiran:</h4>
+            <table id="laporanTable">
+                <thead>
+                    <tr>
+                        <th>Bil</th>
+                        <th>Nama Murid</th>
+                        <th>Maklumat Penjaga</th>
+                    </tr>
+                </thead>
+                <tbody id="laporanBody">
+                    <!-- Data dimasukkan secara auto -->
+                </tbody>
+            </table>
+
+            <div style="margin-top:40px; display:flex; justify-content:space-between; font-size:12px;">
+                <div>
+                    <p>Disediakan oleh,</p>
+                    <br><br>
+                    <p>_______________________<br><strong>(CIKGU ATHIRA)</strong><br>Guru Kelas 3 Gamma</p>
+                </div>
+                <div>
+                    <p>Disahkan oleh,</p>
+                    <br><br>
+                    <p>_______________________<br><strong>(PENGETUA / PK HEM)</strong><br>SMK Paya Kemunting</p>
+                </div>
+            </div>
+
+            <div style="margin-top:24px;" class="no-print">
+                <button onclick="window.print()" class="btn btn-dark"><i class="fa-solid fa-print"></i> Cetak Laporan RPH Ini (PDF)</button>
             </div>
         </div>
 
     </div>
 
+    <!-- JAVASCRIPT SYSTEM LOGIC -->
+    <script>
+        // Data Default Permulaan
+        let muridList = JSON.parse(localStorage.getItem('muridList')) || [
+            { nama: "Ahmad Afiq bin Rosli", bapa: "Rosli (012-3456789)" },
+            { nama: "Nur Aina Insyirah binti Hazmi", bapa: "Hazmi (019-8765432)" }
+        ];
+
+        let kerjaRumahList = JSON.parse(localStorage.getItem('kerjaRumahList')) || [
+            { nama: "Ahmad Afiq bin Rosli", tajuk: "Karangan Laporan", status: "Selesai" }
+        ];
+
+        document.getElementById('khTarikh').valueAsDate = new Date();
+
+        // Navigasi Seksyen
+        function showSection(sectionId) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.getElementById('section-dashboard').style.display = 'none';
+            
+            if(sectionId === 'dashboard') {
+                document.getElementById('section-dashboard').style.display = 'block';
+            } else {
+                document.getElementById('section-' + sectionId).classList.add('active');
+            }
+
+            // Kemaskini Butang Active
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            renderAll();
+        }
+
+        // Render Semua Data
+        function renderAll() {
+            // Save to LocalStorage
+            localStorage.setItem('muridList', JSON.stringify(muridList));
+            localStorage.setItem('kerjaRumahList', JSON.stringify(kerjaRumahList));
+
+            // Render Murid
+            let mBody = document.getElementById('senaraiMuridBody');
+            let lapBody = document.getElementById('laporanBody');
+            let khBody = document.getElementById('senaraiKehadiranBody');
+
+            mBody.innerHTML = '';
+            lapBody.innerHTML = '';
+            khBody.innerHTML = '';
+
+            muridList.forEach((m, index) => {
+                mBody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td><strong>${m.nama}</strong></td>
+                        <td>${m.bapa}</td>
+                        <td class="no-print"><button onclick="padamMurid(${index})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>`;
+
+                lapBody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${m.nama}</td>
+                        <td>${m.bapa}</td>
+                    </tr>`;
+
+                khBody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${m.nama}</td>
+                        <td>
+                            <select class="form-control kh-status" onchange="kiraPeratus()">
+                                <option value="Hadir">Hadir</option>
+                                <option value="Tidak Hadir">Tidak Hadir</option>
+                                <option value="Lewat">Lewat</option>
+                            </select>
+                        </td>
+                        <td><input type="text" placeholder="Catatan" class="form-control"></td>
+                    </tr>`;
+            });
+
+            // Render Kerja Rumah
+            let krBody = document.getElementById('senaraiKRBody');
+            krBody.innerHTML = '';
+            kerjaRumahList.forEach((kr, index) => {
+                let statusColor = kr.status === 'Selesai' ? 'green' : 'red';
+                krBody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${kr.nama}</td>
+                        <td>${kr.tajuk}</td>
+                        <td><span style="color:${statusColor}; font-weight:bold;">${kr.status}</span></td>
+                        <td class="no-print"><button onclick="padamKR(${index})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>`;
+            });
+
+            kiraPeratus();
+        }
+
+        // Fungsi Tambah Data
+        function tambahMurid() {
+            let nama = document.getElementById('mNama').value;
+            let bapa = document.getElementById('mBapa').value;
+            if(nama) {
+                muridList.push({ nama: nama, bapa: bapa || '-' });
+                document.getElementById('mNama').value = '';
+                document.getElementById('mBapa').value = '';
+                renderAll();
+            }
+        }
+
+        function padamMurid(index) {
+            muridList.splice(index, 1);
+            renderAll();
+        }
+
+        function tambahKerjaRumah() {
+            let nama = document.getElementById('krNama').value;
+            let tajuk = document.getElementById('krTajuk').value;
+            let status = document.getElementById('krStatus').value;
+            if(nama && tajuk) {
+                kerjaRumahList.push({ nama: nama, tajuk: tajuk, status: status });
+                document.getElementById('krNama').value = '';
+                document.getElementById('krTajuk').value = '';
+                renderAll();
+            }
+        }
+
+        function padamKR(index) {
+            kerjaRumahList.splice(index, 1);
+            renderAll();
+        }
+
+        function kiraPeratus() {
+            let selects = document.querySelectorAll('.kh-status');
+            if(selects.length === 0) return;
+
+            let hadirCount = 0;
+            selects.forEach(s => {
+                if(s.value === 'Hadir' || s.value === 'Lewat') hadirCount++;
+            });
+
+            let peratus = Math.round((hadirCount / selects.length) * 100);
+            document.getElementById('khPeratusText').innerText = peratus + '%';
+            document.getElementById('statPeratus').innerText = peratus + '%';
+            document.getElementById('laporanPeratus').innerText = peratus + '%';
+        }
+
+        function simpanKehadiran() {
+            alert('Kehadiran hari ini berjaya disimpan!');
+        }
+
+        // Init Pertama
+        renderAll();
+    </script>
 </body>
 </html>
