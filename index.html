@@ -11,11 +11,18 @@
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
         .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); text-align: center; }
         .card h3 { margin-top: 0; color: #333; }
-        .btn { display: inline-block; padding: 10px 15px; background: #800000; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        .btn { display: inline-block; padding: 10px 15px; background: #800000; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; text-decoration: none; }
         .btn:hover { background: #600000; }
         .content-section { display: none; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         .active { display: block; }
         .btn-back { background: #555; margin-bottom: 15px; }
+
+        /* Style untuk Jadual & Borang */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background-color: #800000; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        input[type="text"], input[type="date"], select { width: 100%; padding: 8px; margin: 5px 0 15px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
     </style>
 </head>
 <body>
@@ -49,32 +56,106 @@
             </div>
         </div>
 
-        <!-- SEKSYEN KEHADIRAN -->
+        <!-- 1. SEKSYEN KEHADIRAN (BORANG) -->
         <div id="kehadiran" class="content-section">
             <button class="btn btn-back" onclick="goHome()">⬅️ Kembali ke Dashboard</button>
-            <h2>📋 Modul Kehadiran Murid</h2>
-            <p>Ruang untuk tanda kehadiran harian murid kelas anda.</p>
+            <h2>📋 Borang Kehadiran Harian</h2>
+            
+            <label>Tarikh:</label>
+            <input type="date" id="tarikh">
+
+            <table>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Murid</th>
+                    <th>Status Kehadiran</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Ahmad Bin Zulkifli</td>
+                    <td>
+                        <select>
+                            <option>Hadir</option>
+                            <option>Tidak Hadir</option>
+                            <option>Bersebab / Sakit</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Siti Nur Aishah Binti Ali</td>
+                    <td>
+                        <select>
+                            <option>Hadir</option>
+                            <option>Tidak Hadir</option>
+                            <option>Bersebab / Sakit</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <button class="btn" onclick="alert('Kehadiran berjaya direkodkan!')">Simpan Kehadiran</button>
         </div>
 
-        <!-- SEKSYEN TUGASAN -->
+        <!-- 2. SEKSYEN TUGASAN (JADUAL REKOD) -->
         <div id="tugasan" class="content-section">
             <button class="btn btn-back" onclick="goHome()">⬅️ Kembali ke Dashboard</button>
-            <h2>📚 Semakan Kerja Rumah</h2>
-            <p>Senarai tugasan murid dan rekod penghantaran.</p>
+            <h2>📚 Rekod Penghantaran Kerja Rumah</h2>
+            
+            <table>
+                <tr>
+                    <th>Nama Murid</th>
+                    <th>Tugasan 1 (Latihan 1)</th>
+                    <th>Tugasan 2 (Kuiz Bab 2)</th>
+                </tr>
+                <tr>
+                    <td>Ahmad Bin Zulkifli</td>
+                    <td style="color: green; font-weight: bold;">Hantar</td>
+                    <td style="color: red; font-weight: bold;">Belum Hantar</td>
+                </tr>
+                <tr>
+                    <td>Siti Nur Aishah Binti Ali</td>
+                    <td style="color: green; font-weight: bold;">Hantar</td>
+                    <td style="color: green; font-weight: bold;">Hantar</td>
+                </tr>
+            </table>
         </div>
 
-        <!-- SEKSYEN MURID -->
+        <!-- 3. SEKSYEN MAKLUMAT MURID (JADUAL PROFIL) -->
         <div id="murid" class="content-section">
             <button class="btn btn-back" onclick="goHome()">⬅️ Kembali ke Dashboard</button>
-            <h2>👨‍🎓 Senarai Maklumat Murid</h2>
-            <p>Profil murid, nombor telefon penjaga, dan catatan perkembangan.</p>
+            <h2>👨‍🎓 Senarai Maklumat Murid Kelas</h2>
+            
+            <table>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Murid</th>
+                    <th>No. Tel Penjaga</th>
+                    <th>Jawatan / Catatan</th>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>Ahmad Bin Zulkifli</td>
+                    <td>012-3456789</td>
+                    <td>Ketua Kelas</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Siti Nur Aishah Binti Ali</td>
+                    <td>019-8765432</td>
+                    <td>Penolong Ketua Kelas</td>
+                </tr>
+            </table>
         </div>
 
-        <!-- SEKSYEN LAPORAN -->
+        <!-- 4. SEKSYEN LAPORAN -->
         <div id="laporan" class="content-section">
             <button class="btn btn-back" onclick="goHome()">⬅️ Kembali ke Dashboard</button>
-            <h2>🖨️ Laporan & Analisis</h2>
-            <p>Cetak penyata kehadiran bulanan dan analisis prestasi murid.</p>
+            <h2>🖨️ Ringkasan Laporan Kelas</h2>
+            <p><strong>Peratus Kehadiran Keseluruhan:</strong> 95%</p>
+            <p><strong>Jumlah Murid:</strong> 2 Orang</p>
+            <br>
+            <button class="btn" onclick="window.print()">Cetak Laporan Ini</button>
         </div>
     </div>
 
