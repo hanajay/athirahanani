@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <title>Kerja Rumah & Latihan — e-Kemunting Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: #f4f5f7; padding: 20px; color: #333; }
+        .card { background: #fff; border-radius: 12px; padding: 24px; max-width: 900px; margin: 0 auto; border: 1px solid #e2e8f0; }
+        .header-print { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #2563eb; padding-bottom: 12px; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th, td { border: 1px solid #cbd5e1; padding: 10px; text-align: left; font-size: 13px; }
+        th { background: #f1f5f9; }
+        .btn { padding: 8px 16px; border-radius: 6px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+        @media print { .no-print { display: none !important; } body { background: white; padding: 0; } .card { border: none; } }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="header-print">
+        <div>
+            <h2 style="color:#1e40af;">REKOD SEMAKAN KERJA RUMAH / TUGASAN</h2>
+            <p style="font-size:12px; color:#64748b;">Mata Pelajaran: Bahasa Melayu | Guru: Cikgu Athira</p>
+        </div>
+        <button onclick="window.print()" class="btn" style="background:#0f172a; color:white;"><i class="fa-solid fa-print"></i> Cetak Laporan RPH</button>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Murid</th>
+                <th>Tajuk Tugasan</th>
+                <th>Status Penghantaran</th>
+                <th>Markah / Ulasan</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Ahmad Afiq bin Rosli</td>
+                <td>Karangan Laporan Kebersihan</td>
+                <td><span style="color:green; font-weight:bold;">Selesai</span></td>
+                <td>85/100 (Sangat Baik)</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Nur Aina Insyirah binti Hazmi</td>
+                <td>Karangan Laporan Kebersihan</td>
+                <td><span style="color:red; font-weight:bold;">Belum Hantar</span></td>
+                <td>Perlu bimbingan lanjutan</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-top: 20px;" class="no-print">
+        <a href="index.html" class="btn" style="background:#e2e8f0; text-decoration:none; color:#333;">← Kembali ke Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>
