@@ -315,9 +315,15 @@
 
         <!-- MODUL 3: MAKLUMAT MURID -->
         <div id="section-murid" class="view-section">
-            <h2><i class="fa-solid fa-users"></i> Maklumat & Profil Murid</h2>
-            <br>
-            <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1;" class="no-print">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h2><i class="fa-solid fa-users"></i> Maklumat & Profil Murid</h2>
+                <div class="no-print" style="display:flex; gap:8px;">
+                    <button onclick="exportMuridCSV()" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel/CSV</button>
+                    <button onclick="window.print()" class="btn btn-dark"><i class="fa-solid fa-print"></i> Cetak PDF</button>
+                </div>
+            </div>
+
+            <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1; margin-bottom:16px;" class="no-print">
                 <h4 style="font-size:13px; margin-bottom:8px;">Tambah Murid Baharu (Penting: Isi Nama Kelas Bebas):</h4>
                 <div class="form-row">
                     <input type="text" id="mKelasInput" placeholder="Nama Kelas (cth: 3 Gamma / 1 Alpha)" class="form-control" style="flex:1;">
@@ -328,20 +334,17 @@
                 </div>
             </div>
 
-            <table style="margin-top:20px;">
-                <thead>
-                    <tr>
-                        <th>Bil</th>
-                        <th>Nama Murid</th>
-                        <th>Kelas</th>
-                        <th>Nama Ibu Bapa / Penjaga</th>
-                        <th>No. Telefon</th>
-                        <th class="no-print">Tindakan</th>
-                    </tr>
-                </thead>
-                <tbody id="senaraiMuridBody"></tbody>
-            </table>
-        </div>
+           <!-- PENAPIS / FILTER KELAS MURID -->
+            <div class="form-row no-print" style="margin-bottom:16px;">
+                <div class="form-group" style="flex:1; max-width:300px;">
+                    <label style="font-weight:600; font-size:12px;">Tapis Mengikut Kelas:</label>
+                    <select id="muridFilterKelasSelect" class="form-control" onchange="renderAll()">
+                        <!-- Dinamik -->
+                    </select>
+                </div>
+            </div>
+
+            <table style="margin-top:10px;">
 
         <!-- MODUL 4: LAPORAN RPH FORMAT A4 -->
         <div id="section-laporan" class="view-section">
@@ -448,7 +451,7 @@
             let classes = [...new Set(muridList.map(m => (m.kelas || '').trim()).filter(Boolean))];
             if (classes.length === 0) classes = ['Tiada Kelas'];
 
-            let dropdownIds = ['khKelasSelect', 'krKelasSelect', 'laporanKelasSelect'];
+            let dropdownIds = ['khKelasSelect', 'krKelasSelect', 'laporanKelasSelect', 'muridFilterKelasSelect'];
             dropdownIds.forEach(id => {
                 let el = document.getElementById(id);
                 if (!el) return;
@@ -478,73 +481,67 @@
         }
 
         function renderAll() {
-            let khKelas = document.getElementById('khKelasSelect').value || 'Semua';
-            let lapKelas = document.getElementById('laporanKelasSelect').value || 'Semua';
+    let khKelas = document.getElementById('khKelasSelect')?.value || 'Semua';
+    let lapKelas = document.getElementById('laporanKelasSelect')?.value || 'Semua';
 
-            document.getElementById('laporanKelasText').innerText = lapKelas;
+    if (document.getElementById('laporanKelasText')) {
+        document.getElementById('laporanKelasText').innerText = lapKelas;
+    }
 
-            let mBody = document.getElementById('senaraiMuridBody');
-            let lapBody = document.getElementById('laporanBody');
-            let khBody = document.getElementById('senaraiKehadiranBody');
+    let mBody = document.getElementById('senaraiMuridBody');
+    let lapBody = document.getElementById('laporanBody');
+    let khBody = document.getElementById('senaraiKehadiranBody');
 
-            mBody.innerHTML = '';
-            lapBody.innerHTML = '';
-            khBody.innerHTML = '';
+    if (mBody) mBody.innerHTML = '';
+    if (lapBody) lapBody.innerHTML = '';
+    if (khBody) khBody.innerHTML = '';
 
-            let tarikhSemasa = document.getElementById('khTarikh').value || new Date().toISOString().split('T')[0];
+    let tarikhSemasa = document.getElementById('khTarikh')?.value || new Date().toISOString().split('T')[0];
 
-            // Tapis Murid Mengikut Kelas Bagi Kehadiran
-            let filteredKhMurid = (khKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === khKelas);
+    // 1. Paparan Kehadiran Harian
+    let filteredKhMurid = (khKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === khKelas);
+    filteredKhMurid.forEach((m, index) => {
+        let statusTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) ? kehadiranData[tarikhSemasa][m.nama].status : 'Hadir';
+        let catatanTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) ? kehadiranData[tarikhSemasa][m.nama].catatan : '';
 
-            filteredKhMurid.forEach((m, index) => {
-                let statusTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) ? kehadiranData[tarikhSemasa][m.nama].status : 'Hadir';
-                let catatanTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) ? kehadiranData[tarikhSemasa][m.nama].catatan : '';
+        if (khBody) {
+            khBody.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${m.nama}</td>
+                    <td><span class="badge-smk">${m.kelas || '-'}</span></td>
+                    <td>
+                        <select class="form-control kh-status" data-nama="${m.nama}" onchange="kiraPeratus()">
+                            <option value="Hadir" ${statusTersimpan === 'Hadir' ? 'selected' : ''}>Hadir</option>
+                            <option value="Tidak Hadir" ${statusTersimpan === 'Tidak Hadir' ? 'selected' : ''}>Tidak Hadir</option>
+                            <option value="Lewat" ${statusTersimpan === 'Lewat' ? 'selected' : ''}>Lewat</option>
+                        </select>
+                    </td>
+                    <td><input type="text" placeholder="Catatan" class="form-control kh-catatan" data-nama="${m.nama}" value="${catatanTersimpan}"></td>
+                </tr>`;
+        }
+    });
 
-                khBody.innerHTML += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${m.nama}</td>
-                        <td><span class="badge-smk">${m.kelas || '-'}</span></td>
-                        <td>
-                            <select class="form-control kh-status" data-nama="${m.nama}" onchange="kiraPeratus()">
-                                <option value="Hadir" ${statusTersimpan === 'Hadir' ? 'selected' : ''}>Hadir</option>
-                                <option value="Tidak Hadir" ${statusTersimpan === 'Tidak Hadir' ? 'selected' : ''}>Tidak Hadir</option>
-                                <option value="Lewat" ${statusTersimpan === 'Lewat' ? 'selected' : ''}>Lewat</option>
-                            </select>
-                        </td>
-                        <td><input type="text" placeholder="Catatan" class="form-control kh-catatan" data-nama="${m.nama}" value="${catatanTersimpan}"></td>
-                    </tr>`;
-            });
+    // 2. Paparan Senarai Maklumat Murid (Dengan Penapis Kelas)
+    let muridFilterKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
+    let filteredMuridList = (muridFilterKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === muridFilterKelas);
 
-            // Tapis Murid Mengikut Kelas Bagi Laporan
-            let filteredLapMurid = (lapKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === lapKelas);
-            filteredLapMurid.forEach((m, index) => {
-                lapBody.innerHTML += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${m.nama}</td>
-                        <td>${m.kelas || '-'}</td>
-                        <td>${m.bapa || '-'}</td>
-                        <td>${m.tel || '-'}</td>
-                    </tr>`;
-            });
+    filteredMuridList.forEach((m, index) => {
+        if (mBody) {
+            mBody.innerHTML += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td><strong>${m.nama}</strong></td>
+                    <td><span class="badge-smk">${m.kelas || '-'}</span></td>
+                    <td>${m.bapa || '-'}</td>
+                    <td>${m.tel || '-'}</td>
+                    <td class="no-print"><button onclick="padamMurid(${m.id})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+                </tr>`;
+        }
+    });
 
-            // Senarai Semua Murid Modul Maklumat
-            muridList.forEach((m, index) => {
-                mBody.innerHTML += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td><strong>${m.nama}</strong></td>
-                        <td><span class="badge-smk">${m.kelas || '-'}</span></td>
-                        <td>${m.bapa || '-'}</td>
-                        <td>${m.tel || '-'}</td>
-                        <td class="no-print"><button onclick="padamMurid(${m.id})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
-                    </tr>`;
-            });
-
-            // Senarai Kerja Rumah
-            let krBody = document.getElementById('senaraiKRBody');
-            krBody.innerHTML = '';
+    kiraPeratus();
+}
             kerjaRumahList.forEach((kr, index) => {
                 let isDone = kr.status === 'Selesai';
                 krBody.innerHTML += `
@@ -669,6 +666,28 @@
         }
 
         loadDataFromSupabase();
+    function exportMuridCSV() {
+            let filterKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
+            let listToExport = (filterKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === filterKelas);
+
+            if (listToExport.length === 0) {
+                alert('Tiada data murid untuk dieksport.');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Bil,Nama Murid,Kelas,Nama Ibu Bapa / Penjaga,No Telefon\n";
+            listToExport.forEach((m, i) => {
+                csvContent += `"${i+1}","${m.nama}","${m.kelas || '-'}","${m.bapa || '-'}","${m.tel || '-'}"\n`;
+            });
+
+            let encodedUri = encodeURI(csvContent);
+            let link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `Senarai_Murid_${filterKelas}_SMKPK.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
     </script>
 </body>
 </html>
