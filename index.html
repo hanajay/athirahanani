@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>e-Kemunting Pro — Portal Cikgu Athira</title>
+    <title>e-Nong Chik Pro — Portal Cikgu Athira</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -62,7 +62,7 @@
     /* --- TETAPAN PRINT A4 KHAS --- */
     @page {
         size: A4 portrait;
-        margin: 12mm 15mm 12mm 15mm; /* Margin selamat A4 */
+        margin: 12mm 15mm 12mm 15mm;
     }
 
     @media print {
@@ -125,7 +125,6 @@
             print-color-adjust: exact;
         }
 
-        /* Hilangkan kotak input/select semasa print supaya nampak sebagai teks kemas */
         input, select {
             border: none !important;
             background: transparent !important;
@@ -142,14 +141,13 @@
         }
     }
 </style>
-    </style>
 </head>
 <body>
 
     <div class="top-bar">
         <div class="lang-toggle">
-            <button class="lang-btn active" id="btn-bm" onclick="setLanguage('bm')">Bahasa Melayu</button>
-            <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">English</button>
+            <button class="lang-btn active" id="btn-bm">Bahasa Melayu</button>
+            <button class="lang-btn" id="btn-en">English</button>
         </div>
         <div class="top-nav-links">
             <a href="#"><i class="fa-solid fa-user-tie"></i> <span>Guru</span></a>
@@ -161,8 +159,8 @@
         <div class="logo-section">
             <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
             <div class="logo-title">
-                <h1>e-Kemunting Pro <span class="badge-smk">SMKPK</span></h1>
-                <p>SMK Paya Kemunting • <span>Ilmu • Amal • Jaya</span></p>
+                <h1>e-Nong Chik Pro <span class="badge-smk">SKNC</span></h1>
+                <p>SK Nong Chik • <span>Benar • Jujur </span></p>
             </div>
         </div>
         <div class="user-profile">
@@ -283,12 +281,8 @@
             <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1;" class="no-print">
                 <h4 style="font-size:13px; margin-bottom:8px;">Tambah Tugasan / Kerja Rumah Baharu:</h4>
                 <div class="form-row">
-                    <select id="krKelasSelect" class="form-control" style="flex:1;" onchange="updateKRStudentDropdown()">
-                        <!-- Dinamik -->
-                    </select>
-                    <select id="krNamaSelect" class="form-control" style="flex:1;">
-                        <!-- Dinamik Mengikut Kelas -->
-                    </select>
+                    <select id="krKelasSelect" class="form-control" style="flex:1;" onchange="updateKRStudentDropdown()"></select>
+                    <select id="krNamaSelect" class="form-control" style="flex:1;"></select>
                     <input type="text" id="krTajuk" placeholder="Tajuk Tugasan (cth: Karangan Laporan)" class="form-control" style="flex:1;">
                     <select id="krStatus" class="form-control" style="flex:1;">
                         <option value="Selesai">Selesai</option>
@@ -324,9 +318,9 @@
             </div>
 
             <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1; margin-bottom:16px;" class="no-print">
-                <h4 style="font-size:13px; margin-bottom:8px;">Tambah Murid Baharu (Penting: Isi Nama Kelas Bebas):</h4>
+                <h4 style="font-size:13px; margin-bottom:8px;">Tambah Murid Baharu:</h4>
                 <div class="form-row">
-                    <input type="text" id="mKelasInput" placeholder="Nama Kelas (cth: 3 Gamma / 1 Alpha)" class="form-control" style="flex:1;">
+                    <input type="text" id="mKelasInput" placeholder="Nama Kelas (cth: 3 Gamma)" class="form-control" style="flex:1;">
                     <input type="text" id="mNama" placeholder="Nama Murid" class="form-control" style="flex:1;">
                     <input type="text" id="mBapa" placeholder="Nama Ibu Bapa / Penjaga" class="form-control" style="flex:1;">
                     <input type="text" id="mTel" placeholder="No. Telefon" class="form-control" style="flex:1;">
@@ -334,17 +328,27 @@
                 </div>
             </div>
 
-           <!-- PENAPIS / FILTER KELAS MURID -->
             <div class="form-row no-print" style="margin-bottom:16px;">
                 <div class="form-group" style="flex:1; max-width:300px;">
                     <label style="font-weight:600; font-size:12px;">Tapis Mengikut Kelas:</label>
-                    <select id="muridFilterKelasSelect" class="form-control" onchange="renderAll()">
-                        <!-- Dinamik -->
-                    </select>
+                    <select id="muridFilterKelasSelect" class="form-control" onchange="renderAll()"></select>
                 </div>
             </div>
 
             <table style="margin-top:10px;">
+                <thead>
+                    <tr>
+                        <th>Bil</th>
+                        <th>Nama Murid</th>
+                        <th>Kelas</th>
+                        <th>Nama Ibu Bapa / Penjaga</th>
+                        <th>No. Telefon</th>
+                        <th class="no-print">Tindakan</th>
+                    </tr>
+                </thead>
+                <tbody id="senaraiMuridBody"></tbody>
+            </table>
+        </div>
 
         <!-- MODUL 4: LAPORAN RPH FORMAT A4 -->
         <div id="section-laporan" class="view-section">
@@ -378,7 +382,7 @@
                 </thead>
                 <tbody id="laporanBody"></tbody>
             </table>
-            <!-- RUANGAN TANDATANGAN (UNTUK PRINT / PDF) -->
+
             <div style="margin-top: 40px; display: flex; justify-content: space-between; page-break-inside: avoid;">
                 <div style="width: 40%;">
                     <p>Disediakan oleh:</p>
@@ -446,7 +450,6 @@
             renderAll();
         }
 
-        // Fungsi Jana Dropdown Kelas Secara Dinamik berdasarkan murid yang wujud
         function populateClassDropdowns() {
             let classes = [...new Set(muridList.map(m => (m.kelas || '').trim()).filter(Boolean))];
             if (classes.length === 0) classes = ['Tiada Kelas'];
@@ -467,8 +470,9 @@
         }
 
         function updateKRStudentDropdown() {
-            let selectedKelas = document.getElementById('krKelasSelect').value;
+            let selectedKelas = document.getElementById('krKelasSelect')?.value || 'Semua';
             let krNamaSelect = document.getElementById('krNamaSelect');
+            if (!krNamaSelect) return;
             krNamaSelect.innerHTML = '';
 
             let filteredStudents = (selectedKelas === 'Semua' || !selectedKelas) 
@@ -481,78 +485,96 @@
         }
 
         function renderAll() {
-    let khKelas = document.getElementById('khKelasSelect')?.value || 'Semua';
-    let lapKelas = document.getElementById('laporanKelasSelect')?.value || 'Semua';
+            let khKelas = document.getElementById('khKelasSelect')?.value || 'Semua';
+            let lapKelas = document.getElementById('laporanKelasSelect')?.value || 'Semua';
 
-    if (document.getElementById('laporanKelasText')) {
-        document.getElementById('laporanKelasText').innerText = lapKelas;
-    }
+            if (document.getElementById('laporanKelasText')) {
+                document.getElementById('laporanKelasText').innerText = lapKelas;
+            }
 
-    let mBody = document.getElementById('senaraiMuridBody');
-    let lapBody = document.getElementById('laporanBody');
-    let khBody = document.getElementById('senaraiKehadiranBody');
+            let mBody = document.getElementById('senaraiMuridBody');
+            let lapBody = document.getElementById('laporanBody');
+            let khBody = document.getElementById('senaraiKehadiranBody');
+            let krBody = document.getElementById('senaraiKRBody');
 
-    if (mBody) mBody.innerHTML = '';
-    if (lapBody) lapBody.innerHTML = '';
-    if (khBody) khBody.innerHTML = '';
+            if (mBody) mBody.innerHTML = '';
+            if (lapBody) lapBody.innerHTML = '';
+            if (khBody) khBody.innerHTML = '';
+            if (krBody) krBody.innerHTML = '';
 
-    let tarikhSemasa = document.getElementById('khTarikh')?.value || new Date().toISOString().split('T')[0];
+            let tarikhSemasa = document.getElementById('khTarikh')?.value || new Date().toISOString().split('T')[0];
 
-    // 1. Paparan Kehadiran Harian
-    let filteredKhMurid = (khKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === khKelas);
-    filteredKhMurid.forEach((m, index) => {
-        let statusTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) ? kehadiranData[tarikhSemasa][m.nama].status : 'Hadir';
-        let catatanTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) ? kehadiranData[tarikhSemasa][m.nama].catatan : '';
+            // 1. Kehadiran Harian
+            let filteredKhMurid = (khKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === khKelas);
+            filteredKhMurid.forEach((m, index) => {
+                let statusTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) ? kehadiranData[tarikhSemasa][m.nama].status : 'Hadir';
+                let catatanTersimpan = (kehadiranData[tarikhSemasa] && kehadiranData[tarikhSemasa][m.nama]) ? kehadiranData[tarikhSemasa][m.nama].catatan : '';
 
-        if (khBody) {
-            khBody.innerHTML += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${m.nama}</td>
-                    <td><span class="badge-smk">${m.kelas || '-'}</span></td>
-                    <td>
-                        <select class="form-control kh-status" data-nama="${m.nama}" onchange="kiraPeratus()">
-                            <option value="Hadir" ${statusTersimpan === 'Hadir' ? 'selected' : ''}>Hadir</option>
-                            <option value="Tidak Hadir" ${statusTersimpan === 'Tidak Hadir' ? 'selected' : ''}>Tidak Hadir</option>
-                            <option value="Lewat" ${statusTersimpan === 'Lewat' ? 'selected' : ''}>Lewat</option>
-                        </select>
-                    </td>
-                    <td><input type="text" placeholder="Catatan" class="form-control kh-catatan" data-nama="${m.nama}" value="${catatanTersimpan}"></td>
-                </tr>`;
-        }
-    });
+                if (khBody) {
+                    khBody.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${m.nama}</td>
+                            <td><span class="badge-smk">${m.kelas || '-'}</span></td>
+                            <td>
+                                <select class="form-control kh-status" data-nama="${m.nama}" onchange="kiraPeratus()">
+                                    <option value="Hadir" ${statusTersimpan === 'Hadir' ? 'selected' : ''}>Hadir</option>
+                                    <option value="Tidak Hadir" ${statusTersimpan === 'Tidak Hadir' ? 'selected' : ''}>Tidak Hadir</option>
+                                    <option value="Lewat" ${statusTersimpan === 'Lewat' ? 'selected' : ''}>Lewat</option>
+                                </select>
+                            </td>
+                            <td><input type="text" placeholder="Catatan" class="form-control kh-catatan" data-nama="${m.nama}" value="${catatanTersimpan}"></td>
+                        </tr>`;
+                }
+            });
 
-    // 2. Paparan Senarai Maklumat Murid (Dengan Penapis Kelas)
-    let muridFilterKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
-    let filteredMuridList = (muridFilterKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === muridFilterKelas);
+            // 2. Senarai Maklumat Murid
+            let muridFilterKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
+            let filteredMuridList = (muridFilterKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === muridFilterKelas);
 
-    filteredMuridList.forEach((m, index) => {
-        if (mBody) {
-            mBody.innerHTML += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td><strong>${m.nama}</strong></td>
-                    <td><span class="badge-smk">${m.kelas || '-'}</span></td>
-                    <td>${m.bapa || '-'}</td>
-                    <td>${m.tel || '-'}</td>
-                    <td class="no-print"><button onclick="padamMurid(${m.id})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
-                </tr>`;
-        }
-    });
+            filteredMuridList.forEach((m, index) => {
+                if (mBody) {
+                    mBody.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td><strong>${m.nama}</strong></td>
+                            <td><span class="badge-smk">${m.kelas || '-'}</span></td>
+                            <td>${m.bapa || '-'}</td>
+                            <td>${m.tel || '-'}</td>
+                            <td class="no-print"><button onclick="padamMurid(${m.id})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>`;
+                }
+            });
 
-    kiraPeratus();
-}
+            // 3. Laporan RPH
+            let filteredLapList = (lapKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === lapKelas);
+            filteredLapList.forEach((m, index) => {
+                if (lapBody) {
+                    lapBody.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${m.nama}</td>
+                            <td><span class="badge-smk">${m.kelas || '-'}</span></td>
+                            <td>${m.bapa || '-'}</td>
+                            <td>${m.tel || '-'}</td>
+                        </tr>`;
+                }
+            });
+
+            // 4. Kerja Rumah
             kerjaRumahList.forEach((kr, index) => {
                 let isDone = kr.status === 'Selesai';
-                krBody.innerHTML += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${kr.nama}</td>
-                        <td><span class="badge-smk">${kr.kelas || '-'}</span></td>
-                        <td>${kr.tajuk}</td>
-                        <td><span style="color:${isDone ? 'green' : 'red'}; font-weight:bold;">${kr.status}</span></td>
-                        <td class="no-print"><button onclick="padamKR(${kr.id})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
-                    </tr>`;
+                if (krBody) {
+                    krBody.innerHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${kr.nama}</td>
+                            <td><span class="badge-smk">${kr.kelas || '-'}</span></td>
+                            <td>${kr.tajuk}</td>
+                            <td><span style="color:${isDone ? 'green' : 'red'}; font-weight:bold;">${kr.status}</span></td>
+                            <td class="no-print"><button onclick="padamKR(${kr.id})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button></td>
+                        </tr>`;
+                }
             });
 
             kiraPeratus();
@@ -665,8 +687,7 @@
             }
         }
 
-        loadDataFromSupabase();
-    function exportMuridCSV() {
+        function exportMuridCSV() {
             let filterKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
             let listToExport = (filterKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === filterKelas);
 
@@ -688,6 +709,8 @@
             link.click();
             document.body.removeChild(link);
         }
+
+        loadDataFromSupabase();
     </script>
 </body>
 </html>
