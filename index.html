@@ -62,7 +62,6 @@
     th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; font-size: 13px; }
     th { background: #f8fafc; }
 
-    /* TETAPAN PRINT A4 KHAS */
     @page { size: A4 portrait; margin: 12mm 15mm 12mm 15mm; }
     @media print {
         *, *:before, *:after { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
@@ -174,7 +173,7 @@
             </div>
         </div>
 
-        <!-- MODUL 1: KEHADIRAN (HANYA 1 TARIKH HARIAN) -->
+        <!-- MODUL 1: KEHADIRAN -->
         <div id="section-kehadiran" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h2><i class="fa-regular fa-calendar-check"></i> Modul Kehadiran Harian</h2>
@@ -182,7 +181,7 @@
 
             <div class="form-row" style="margin-bottom:16px; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #cbd5e1;">
                 <div class="form-group" style="flex:1;">
-                    <label><i class="fa-regular fa-calendar"></i> Tarikh Kehadiran (Pilih tarikh hari ini atau tarikh lepas):</label>
+                    <label><i class="fa-regular fa-calendar"></i> Tarikh Kehadiran (Hari Ini atau Tarikh Lepas):</label>
                     <input type="date" id="khTarikhHarian" class="form-control" onchange="renderKehadiranHarian()">
                 </div>
                 <div class="form-group" style="flex:1;">
@@ -297,7 +296,7 @@
             </table>
         </div>
 
-        <!-- MODUL 4: LAPORAN RPH (DENGAN CUSTOM RANGE MINGGUAN/BULANAN UNTUK PRINT) -->
+        <!-- MODUL 4: LAPORAN RPH -->
         <div id="section-laporan" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:16px;">
                 <div style="text-align:left;">
@@ -305,12 +304,11 @@
                     <p style="font-size:12px; color:#555;">SK NONG CHIK • GURU: CIKGU ATHIRA</p>
                 </div>
                 <div class="no-print" style="display:flex; gap:8px;">
-                    <button onclick="exportToExcel('laporan')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel</button>
+                    <button onclick="exportToExcel('laporan')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel Laporan (Custom Range)</button>
                     <button onclick="window.print()" class="btn btn-dark"><i class="fa-solid fa-print"></i> Cetak PDF / A4</button>
                 </div>
             </div>
 
-            <!-- PENAPIS CUSTOM RANGE DILAKSANAKAN DI SINI KAS UNTUK PRINT & EKLSPORT -->
             <div class="form-row no-print" style="margin-bottom:16px; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #cbd5e1;">
                 <div class="form-group" style="flex:1;">
                     <label><i class="fa-regular fa-calendar"></i> Tarikh Mula Laporan:</label>
@@ -332,15 +330,15 @@
                 <div><strong>Peratus Kehadiran Purata Julat Ini:</strong> <span id="laporanPeratusText" style="color:#1e40af; font-weight:bold;">0%</span></div>
             </div>
 
-            <h4>Ringkasan Senarai Murid:</h4>
+            <h4>Ringkasan Senarai & Rekod Kehadiran Julat:</h4>
             <table>
                 <thead>
                     <tr>
                         <th>Bil</th>
                         <th>Nama Murid</th>
                         <th>Kelas</th>
-                        <th>Nama Ibu Bapa / Penjaga</th>
-                        <th>No. Telefon</th>
+                        <th>Hari Hadir / Rekod Tarikh</th>
+                        <th>Peratus (%)</th>
                     </tr>
                 </thead>
                 <tbody id="laporanBody"></tbody>
@@ -373,7 +371,6 @@
         let kerjaRumahList = [];
         let kehadiranData = {};
 
-        // Tetapkan tarikh hari ini sebagai default
         const todayStr = new Date().toISOString().split('T')[0];
         document.getElementById('khTarikhHarian').value = todayStr;
         document.getElementById('lapTarikhMula').value = todayStr;
@@ -402,7 +399,17 @@
         async function loadDataFromSupabase() {
             try {
                 const { data: muridData } = await db.from('murid').select('*');
-                if (muridData) muridList = muridData;
+                if (muridData) {
+                    // Tapis duplikasi murid berasaskan Nama + Kelas
+                    let uniqueMap = new Map();
+                    muridData.forEach(item => {
+                        let key = (item.nama || '').trim().toLowerCase() + '_' + (item.kelas || '').trim().toLowerCase();
+                        if (!uniqueMap.has(key)) {
+                            uniqueMap.set(key, item);
+                        }
+                    });
+                    muridList = Array.from(uniqueMap.values());
+                }
 
                 const { data: krData } = await db.from('kerjarumah').select('*');
                 if (krData) kerjaRumahList = krData;
@@ -457,7 +464,7 @@
             });
         }
 
-        // --- 1. MODUL KEHADIRAN (1 TARIKH HARIAN SAHAJA) ---
+        // --- 1. KEHADIRAN (PEMBETULAN DUPLIKASI + UPDATE TARIKH LEPAS) ---
         function renderKehadiranHarian() {
             let tarikhPilihan = document.getElementById('khTarikhHarian').value;
             let kelasPilihan = document.getElementById('khKelasSelect').value;
@@ -511,13 +518,14 @@
             let statusSelects = document.querySelectorAll('.kh-status');
             let catatanInputs = document.querySelectorAll('.kh-catatan');
 
-            let payload = [];
+            let mapPayload = new Map();
             statusSelects.forEach((select, index) => {
                 let namaMurid = select.getAttribute('data-nama');
                 let statusVal = select.value;
                 let catatanVal = catatanInputs[index].value;
 
-                payload.push({
+                // Memastikan tiada kunci (tarikh + nama) bertindih dihantar ke Supabase
+                mapPayload.set(namaMurid, {
                     tarikh: tarikh,
                     nama: namaMurid,
                     status: statusVal,
@@ -525,17 +533,19 @@
                 });
             });
 
+            let payload = Array.from(mapPayload.values());
+
             const { error } = await db.from('kehadiran').upsert(payload, { onConflict: 'tarikh,nama' });
 
             if (error) {
                 alert('Gagal menyimpan kehadiran: ' + error.message);
             } else {
-                alert(`Kehadiran tarikh (${tarikh}) berjaya disimpan!`);
+                alert(`Kehadiran tarikh (${tarikh}) berjaya disimpan/dikemaskini!`);
                 await loadDataFromSupabase();
             }
         }
 
-        // --- 2. MODUL KERJA RUMAH (KEMASKINI STATUS SELESAI/BELUM) ---
+        // --- 2. KERJA RUMAH ---
         function renderKerjaRumah() {
             let krFilterKelas = document.getElementById('krFilterKelasSelect')?.value || 'Semua';
             let krBody = document.getElementById('senaraiKRBody');
@@ -603,7 +613,7 @@
             }
         }
 
-        // --- 3. MODUL MURID ---
+        // --- 3. MAKLUMAT MURID ---
         function renderMurid() {
             let muridFilterKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
             let mBody = document.getElementById('senaraiMuridBody');
@@ -634,7 +644,7 @@
             let tel = document.getElementById('mTel').value;
 
             if(nama && kelas) {
-                const { error } = await db.from('murid').insert([{ nama, kelas: kelas.trim(), bapa: bapa || '-', tel: tel || '-' }]);
+                const { error } = await db.from('murid').insert([{ nama: nama.trim(), kelas: kelas.trim(), bapa: bapa || '-', tel: tel || '-' }]);
                 if (error) alert('Gagal menambah murid: ' + error.message);
                 else {
                     document.getElementById('mNama').value = '';
@@ -657,53 +667,83 @@
             }
         }
 
-        // --- 4. MODUL LAPORAN RPH (CUSTOM RANGE UNTUK KIRA MINGGUAN/BULANAN & PRINT) ---
-        function renderLaporanRPH() {
+        // --- 4. LAPORAN RPH (CUSTOM RANGE DENGAN DATES DALAM EXCEL) ---
+        function getKehadiranLaporanData() {
             let lapKelas = document.getElementById('laporanKelasSelect')?.value || 'Semua';
             let tMula = document.getElementById('lapTarikhMula')?.value;
             let tAkhir = document.getElementById('lapTarikhAkhir')?.value;
 
-            document.getElementById('laporanKelasText').innerText = lapKelas;
-            document.getElementById('laporanJulatTarikhText').innerText = (tMula && tAkhir) ? `${tMula} hingga ${tAkhir}` : 'Keseluruhan';
+            let filteredLapList = (lapKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === lapKelas);
+
+            // Dapatkan senarai tarikh yang sah dalam julat
+            let availableDates = Object.keys(kehadiranData).filter(d => {
+                return (!tMula || d >= tMula) && (!tAkhir || d <= tAkhir);
+            }).sort();
+
+            let reportRows = [];
+            let grandTotal = 0;
+            let grandHadir = 0;
+
+            filteredLapList.forEach((m, index) => {
+                let hadirCount = 0;
+                let totalDates = availableDates.length;
+
+                availableDates.forEach(d => {
+                    let st = kehadiranData[d]?.[m.nama]?.status;
+                    if (st === 'Hadir' || st === 'Lewat') hadirCount++;
+                });
+
+                let pct = totalDates > 0 ? Math.round((hadirCount / totalDates) * 100) : 0;
+                
+                grandTotal += totalDates;
+                grandHadir += hadirCount;
+
+                reportRows.push({
+                    bil: index + 1,
+                    nama: m.nama,
+                    kelas: m.kelas || '-',
+                    hadirRingkasan: `${hadirCount} / ${totalDates} Hari`,
+                    peratus: pct + '%',
+                    datesDetail: availableDates
+                });
+            });
+
+            let overallPct = grandTotal > 0 ? Math.round((grandHadir / grandTotal) * 100) : 0;
+
+            return {
+                lapKelas,
+                tMula,
+                tAkhir,
+                availableDates,
+                reportRows,
+                overallPct
+            };
+        }
+
+        function renderLaporanRPH() {
+            let data = getKehadiranLaporanData();
+
+            document.getElementById('laporanKelasText').innerText = data.lapKelas;
+            document.getElementById('laporanJulatTarikhText').innerText = (data.tMula && data.tAkhir) ? `${data.tMula} hingga ${data.tAkhir}` : 'Keseluruhan';
+            document.getElementById('laporanPeratusText').innerText = data.overallPct + '%';
 
             let lapBody = document.getElementById('laporanBody');
             if(!lapBody) return;
             lapBody.innerHTML = '';
 
-            let filteredLapList = (lapKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === lapKelas);
-            filteredLapList.forEach((m, index) => {
+            data.reportRows.forEach(row => {
                 lapBody.innerHTML += `
                     <tr>
-                        <td>${index + 1}</td>
-                        <td>${m.nama}</td>
-                        <td><span class="badge-smk">${m.kelas || '-'}</span></td>
-                        <td>${m.bapa || '-'}</td>
-                        <td>${m.tel || '-'}</td>
+                        <td>${row.bil}</td>
+                        <td>${row.nama}</td>
+                        <td><span class="badge-smk">${row.kelas}</span></td>
+                        <td>${row.hadirRingkasan}</td>
+                        <td><strong>${row.peratus}</strong></td>
                     </tr>`;
             });
-
-            // Kira Peratus Mengikut Julat Tarikh Dinyatakan
-            let totalRecords = 0;
-            let hadirCount = 0;
-            let targetNames = filteredLapList.map(m => m.nama);
-
-            Object.keys(kehadiranData).forEach(tarikh => {
-                if ((!tMula || tarikh >= tMula) && (!tAkhir || tarikh <= tAkhir)) {
-                    Object.keys(kehadiranData[tarikh]).forEach(nama => {
-                        if (targetNames.includes(nama)) {
-                            totalRecords++;
-                            let st = kehadiranData[tarikh][nama].status;
-                            if (st === 'Hadir' || st === 'Lewat') hadirCount++;
-                        }
-                    });
-                }
-            });
-
-            let peratus = totalRecords > 0 ? Math.round((hadirCount / totalRecords) * 100) : 0;
-            document.getElementById('laporanPeratusText').innerText = peratus + '%';
         }
 
-        // --- EXPORT TO EXCEL ---
+        // --- EKSPORT EXCEL DENGAN TARIKH LENGKAP PADA LAPORAN ---
         function exportToExcel(modul) {
             let dataToExport = [];
             let fileName = '';
@@ -723,9 +763,8 @@
                 });
                 fileName = `KerjaRumah_${selectedKelas}.xlsx`;
 
-            } else if (modul === 'murid' || modul === 'laporan') {
-                let filterId = (modul === 'murid') ? 'muridFilterKelasSelect' : 'laporanKelasSelect';
-                let selectedKelas = document.getElementById(filterId)?.value || 'Semua';
+            } else if (modul === 'murid') {
+                let selectedKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
                 let list = (selectedKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === selectedKelas);
 
                 list.forEach((m, i) => {
@@ -737,7 +776,32 @@
                         "No Telefon": m.tel || '-'
                     });
                 });
-                fileName = (modul === 'murid') ? `Senarai_Murid_${selectedKelas}.xlsx` : `Laporan_RPH_${selectedKelas}.xlsx`;
+                fileName = `Senarai_Murid_${selectedKelas}.xlsx`;
+
+            } else if (modul === 'laporan') {
+                let data = getKehadiranLaporanData();
+
+                data.reportRows.forEach(r => {
+                    let item = {
+                        "Bil": r.bil,
+                        "Nama Murid": r.nama,
+                        "Kelas": r.kelas,
+                        "Julat Mula": data.tMula || '-',
+                        "Julat Akhir": data.tAkhir || '-',
+                        "Jumlah Hadir (Hari)": r.hadirRingkasan,
+                        "Peratus Kehadiran (%)": r.peratus
+                    };
+
+                    // Tambah lajur status mengikut setiap TARIKH individu dalam julat
+                    data.availableDates.forEach(d => {
+                        let st = kehadiranData[d]?.[r.nama]?.status || 'Tiada Rekod';
+                        item[`Tarikh: ${d}`] = st;
+                    });
+
+                    dataToExport.push(item);
+                });
+
+                fileName = `Laporan_RPH_Mingguan_${data.lapKelas}_(${data.tMula}_ke_${data.tAkhir}).xlsx`;
             }
 
             if (dataToExport.length === 0) {
