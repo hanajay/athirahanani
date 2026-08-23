@@ -222,48 +222,52 @@
 
         <!-- MODUL 2: KERJA RUMAH -->
         <div id="section-kerjarumah" class="view-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-                <h2><i class="fa-solid fa-book"></i> Rekod Kerja Rumah & Tugasan</h2>
-                <div class="no-print" style="display:flex; gap:8px;">
-                    <button onclick="exportToExcel('kerjarumah')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel</button>
-                </div>
-            </div>
-
-            <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1; margin-bottom:16px;" class="no-print">
-                <h4 style="font-size:13px; margin-bottom:8px;">Tambah Tugasan / Kerja Rumah Baharu:</h4>
-                <div class="form-row">
-                    <select id="krKelasSelect" class="form-control" style="flex:1;" onchange="updateKRStudentDropdown()"></select>
-                    <select id="krNamaSelect" class="form-control" style="flex:1;"></select>
-                    <input type="text" id="krTajuk" placeholder="Tajuk Tugasan (cth: Latihan Matematik)" class="form-control" style="flex:1;">
-                    <select id="krStatus" class="form-control" style="flex:1;">
-                        <option value="Belum Hantar">Belum Hantar</option>
-                        <option value="Selesai">Selesai</option>
-                    </select>
-                    <button onclick="tambahKerjaRumah()" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah</button>
-                </div>
-            </div>
-
-            <div class="form-row no-print" style="margin-bottom:16px;">
-                <div class="form-group" style="flex:1; max-width:300px;">
-                    <label style="font-weight:600; font-size:12px;">Tapis Mengikut Kelas:</label>
-                    <select id="krFilterKelasSelect" class="form-control" onchange="renderKerjaRumah()"></select>
-                </div>
-            </div>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Bil</th>
-                        <th>Nama Murid</th>
-                        <th>Kelas</th>
-                        <th>Tajuk Tugasan</th>
-                        <th>Status</th>
-                        <th class="no-print">Kemaskini Status / Padam</th>
-                    </tr>
-                </thead>
-                <tbody id="senaraiKRBody"></tbody>
-            </table>
+           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h2><i class="fa-solid fa-book"></i> Rekod Kerja Rumah & Tugasan</h2>
+        <div class="no-print" style="display:flex; gap:8px;">
+            <button onclick="exportToExcel('kerjarumah')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel</button>
         </div>
+    </div>
+
+    <!-- Borang Tambah Tugasan Pukal -->
+    <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1; margin-bottom:16px;" class="no-print">
+        <h4 style="font-size:13px; margin-bottom:8px;">Tambah Tugasan / Kerja Rumah Baharu:</h4>
+        <div class="form-row">
+            <select id="krKelasBorang" class="form-control" style="flex:1;">
+                <option value="">-- Pilih Kelas --</option>
+            </select>
+            <input type="text" id="krTajukInput" placeholder="Tajuk Tugasan (cth: Latihan Matematik)" class="form-control" style="flex:2;">
+            <button onclick="tambahTugasanPukal()" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah Tugasan Kelas</button>
+        </div>
+    </div>
+
+    <!-- Tapis Mengikut Kelas -->
+    <div style="margin-bottom:16px; display:flex; align-items:center; gap:8px;" class="no-print">
+        <label style="font-size:13px; font-weight:600;">Tapis Mengikut Kelas:</label>
+        <select id="krKelasFilter" class="form-control" style="width:200px;" onchange="renderKerjaRumah()">
+            <option value="Semua">-- Semua Kelas --</option>
+        </select>
+    </div>
+
+    <!-- Jadual Senarai Tugasan -->
+    <div style="overflow-x:auto;">
+        <table>
+            <thead>
+                <tr>
+                    <th style="width:40px;">Bil</th>
+                    <th>Nama Murid</th>
+                    <th>Kelas</th>
+                    <th>Tajuk Tugasan</th>
+                    <th>Status</th>
+                    <th>Catatan</th>
+                    <th style="width:60px;" class="no-print">Tindakan</th>
+                </tr>
+            </thead>
+            <tbody id="senaraiKerjaRumahBody">
+                <!-- Data akan ditenun oleh JavaScript -->
+            </tbody>
+        </table>
+    </div>
 
         <!-- MODUL 3: MAKLUMAT MURID -->
         <div id="section-murid" class="view-section">
@@ -611,73 +615,148 @@
         }
 
         // --- 2. KERJA RUMAH ---
+        function renderKerjaRumahDropdowns() {
+            let borangSelect = document.getElementById('krKelasBorang');
+            let filterSelect = document.getElementById('krKelasFilter');
+            if (!borangSelect || !filterSelect) return;
+
+            let senaraiKelas = [...new Set(muridList.map(m => (m.kelas || '').trim()))].filter(Boolean).sort();
+
+            let borangOpt = '<option value="">-- Pilih Kelas --</option>';
+            let filterOpt = '<option value="Semua">-- Semua Kelas --</option>';
+
+            senaraiKelas.forEach(k => {
+                borangOpt += `<option value="${k}">${k}</option>`;
+                filterOpt += `<option value="${k}">${k}</option>`;
+            });
+
+            borangSelect.innerHTML = borangOpt;
+            filterSelect.innerHTML = filterOpt;
+        }
+
+        async function tambahTugasanPukal() {
+            let kelas = document.getElementById('krKelasBorang').value;
+            let tajuk = document.getElementById('krTajukInput').value.trim();
+
+            if (!kelas) {
+                alert('Sila pilih kelas terlebih dahulu.');
+                return;
+            }
+            if (!tajuk) {
+                alert('Sila masukkan tajuk tugasan.');
+                return;
+            }
+
+            let muridDalamKelas = muridList.filter(m => (m.kelas || '').trim() === kelas);
+            if (muridDalamKelas.length === 0) {
+                alert('Tiada murid dijumpai dalam kelas ini.');
+                return;
+            }
+
+            let payload = muridDalamKelas.map(m => ({
+                nama: m.nama,
+                kelas: kelas,
+                tajuk: tajuk,
+                status: 'Belum Selesai',
+                catatan: ''
+            }));
+
+            const { error } = await db.from('kerja_rumah').insert(payload);
+
+            if (error) {
+                alert('Gagal menambah tugasan: ' + error.message);
+            } else {
+                alert(`Tugasan "${tajuk}" berjaya dicipta untuk ${muridDalamKelas.length} murid kelas ${kelas}!`);
+                document.getElementById('krTajukInput').value = '';
+                await loadDataFromSupabase();
+            }
+        }
+
         function renderKerjaRumah() {
-            let krFilterKelas = document.getElementById('krFilterKelasSelect')?.value || 'Semua';
-            let krBody = document.getElementById('senaraiKRBody');
-            if(!krBody) return;
+            let filterKelas = document.getElementById('krKelasFilter') ? document.getElementById('krKelasFilter').value : 'Semua';
+            let krBody = document.getElementById('senaraiKerjaRumahBody');
+            if (!krBody) return;
             krBody.innerHTML = '';
 
-            let filteredKRList = (krFilterKelas === 'Semua') 
-                ? kerjaRumahList 
-                : kerjaRumahList.filter(kr => (kr.kelas || '').trim() === krFilterKelas);
+            let dataFiltered = (filterKelas === 'Semua') 
+                ? kerjaRumahData 
+                : kerjaRumahData.filter(k => (k.kelas || '').trim() === filterKelas);
 
-            filteredKRList.forEach((kr, index) => {
-                let isDone = kr.status === 'Selesai';
+            if (dataFiltered.length === 0) {
+                krBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#94a3b8;">Tiada rekod kerja rumah.</td></tr>';
+                return;
+            }
+
+            dataFiltered.forEach((item, index) => {
+                let isSelesai = item.status === 'Selesai' || item.status === 'Hantar';
+
                 krBody.innerHTML += `
                     <tr>
                         <td>${index + 1}</td>
-                        <td>${kr.nama}</td>
-                        <td><span class="badge-smk">${kr.kelas || '-'}</span></td>
-                        <td>${kr.tajuk}</td>
-                        <td><span style="color:${isDone ? 'green' : 'red'}; font-weight:bold;">${kr.status}</span></td>
-                        <td class="no-print" style="display:flex; gap:6px;">
-                            <button onclick="tukarStatusKR(${kr.id}, '${kr.status}')" class="btn btn-sm ${isDone ? 'btn-warning' : 'btn-success'}">
-                                <i class="fa-solid fa-arrows-rotate"></i> Tanda ${isDone ? 'Belum Hantar' : 'Selesai'}
+                        <td><strong>${item.nama}</strong></td>
+                        <td><span class="badge-smk">${item.kelas || '-'}</span></td>
+                        <td>${item.tajuk}</td>
+                        <td>
+                            <div style="display:flex; gap:6px;">
+                                <button type="button" 
+                                    class="btn btn-sm ${isSelesai ? 'btn-success' : 'btn-outline'}" 
+                                    onclick="kemaskiniStatusKR(${item.id}, 'Selesai')">
+                                    <i class="fa-solid fa-check"></i> Selesai
+                                </button>
+                                <button type="button" 
+                                    class="btn btn-sm ${!isSelesai ? 'btn-danger' : 'btn-outline'}" 
+                                    onclick="kemaskiniStatusKR(${item.id}, 'Belum Selesai')">
+                                    <i class="fa-solid fa-xmark"></i> Belum
+                                </button>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" 
+                                class="form-control" 
+                                style="padding:4px 8px; font-size:12px;"
+                                placeholder="Tulis catatan..." 
+                                value="${item.catatan || ''}" 
+                                onblur="kemaskiniCatatanKR(${item.id}, this.value)">
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline" style="color:#dc2626;" onclick="padamKR(${item.id})">
+                                <i class="fa-solid fa-trash"></i>
                             </button>
-                            <button onclick="padamKR(${kr.id})" style="color:red; border:none; background:none; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>`;
             });
         }
 
-        async function tambahKerjaRumah() {
-            let kelas = document.getElementById('krKelasSelect').value;
-            let nama = document.getElementById('krNamaSelect').value;
-            let tajuk = document.getElementById('krTajuk').value;
-            let status = document.getElementById('krStatus').value;
-
-            if(nama && tajuk) {
-                const { error } = await db.from('kerjarumah').insert([{ nama, kelas, tajuk, status }]);
-                if (error) alert('Gagal menambah tugasan: ' + error.message);
-                else {
-                    document.getElementById('krTajuk').value = '';
-                    await loadDataFromSupabase();
-                    renderKerjaRumah();
-                }
+        async function kemaskiniStatusKR(id, statusBaharu) {
+            const { error } = await db.from('kerja_rumah').update({ status: statusBaharu }).eq('id', id);
+            if (error) {
+                alert('Gagal mengemas kini status: ' + error.message);
             } else {
-                alert('Sila masukkan Tajuk Tugasan.');
+                let item = kerjaRumahData.find(k => k.id === id);
+                if (item) item.status = statusBaharu;
+                renderKerjaRumah();
             }
         }
 
-        async function tukarStatusKR(id, currentStatus) {
-            let newStatus = (currentStatus === 'Selesai') ? 'Belum Hantar' : 'Selesai';
-            const { error } = await db.from('kerjarumah').update({ status: newStatus }).eq('id', id);
+        async function kemaskiniCatatanKR(id, catatanBaharu) {
+            const { error } = await db.from('kerja_rumah').update({ catatan: catatanBaharu }).eq('id', id);
             if (error) {
-                alert('Gagal mengemaskini status: ' + error.message);
+                console.error('Gagal mengemas kini catatan:', error.message);
             } else {
-                await loadDataFromSupabase();
-                renderKerjaRumah();
+                let item = kerjaRumahData.find(k => k.id === id);
+                if (item) item.catatan = catatanBaharu;
             }
         }
 
         async function padamKR(id) {
-            if (confirm('Padam tugasan ini?')) {
-                await db.from('kerjarumah').delete().eq('id', id);
+            if (!confirm('Adakah anda pasti ingin memadam rekod tugasan ini?')) return;
+            const { error } = await db.from('kerja_rumah').delete().eq('id', id);
+            if (error) {
+                alert('Gagal memadam: ' + error.message);
+            } else {
                 await loadDataFromSupabase();
-                renderKerjaRumah();
             }
         }
-
         // --- 3. MAKLUMAT MURID ---
         function renderMurid() {
             let muridFilterKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
