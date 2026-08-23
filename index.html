@@ -62,18 +62,27 @@
     th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; font-size: 13px; }
     th { background: #f8fafc; }
 
+    /* TETAPAN CETAKAN TERKAWAL (HANYA LAPORAN RPH SAHAJA APABILA PRINT) */
     @page { size: A4 portrait; margin: 12mm 15mm 12mm 15mm; }
     @media print {
         *, *:before, *:after { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
         html, body { width: 100%; height: auto; margin: 0 !important; padding: 0 !important; font-size: 11pt; background: #fff !important; }
-        .no-print, .top-bar, header, .nav-bar, .hero-banner, .grid-cards, .section-title, button { display: none !important; }
+        
+        /* Sembunyikan elemen luar & semua bahagian kecuali Modul Laporan RPH */
+        .no-print, .top-bar, header, .nav-bar, .hero-banner, .grid-cards, .section-title, button,
+        #section-dashboard, #section-kehadiran, #section-kerjarumah, #section-murid { 
+            display: none !important; 
+        }
+
         .container { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
-        .view-section { display: block !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+        
+        /* Paparkan hanya Laporan RPH */
+        #section-laporan { display: block !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+        
         table { width: 100% !important; border-collapse: collapse !important; page-break-inside: auto; margin-top: 10px !important; }
         tr { page-break-inside: avoid; page-break-after: auto; }
         th, td { border: 1px solid #000 !important; padding: 6px 8px !important; font-size: 10pt !important; color: #000 !important; }
         th { background-color: #f0f0f0 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-        input, select { border: none !important; background: transparent !important; appearance: none !important; -webkit-appearance: none !important; padding: 0 !important; font-size: 10pt !important; }
         .badge-smk { border: 1px solid #000; padding: 1px 4px; color: #000 !important; }
     }
 </style>
@@ -296,7 +305,7 @@
             </table>
         </div>
 
-        <!-- MODUL 4: LAPORAN RPH -->
+        <!-- MODUL 4: LAPORAN RPH (KHAS UNTUK DINETAK) -->
         <div id="section-laporan" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:16px;">
                 <div style="text-align:left;">
@@ -400,7 +409,6 @@
             try {
                 const { data: muridData } = await db.from('murid').select('*');
                 if (muridData) {
-                    // Tapis duplikasi murid berasaskan Nama + Kelas
                     let uniqueMap = new Map();
                     muridData.forEach(item => {
                         let key = (item.nama || '').trim().toLowerCase() + '_' + (item.kelas || '').trim().toLowerCase();
@@ -464,7 +472,7 @@
             });
         }
 
-        // --- 1. KEHADIRAN (PEMBETULAN DUPLIKASI + UPDATE TARIKH LEPAS) ---
+        // --- 1. KEHADIRAN ---
         function renderKehadiranHarian() {
             let tarikhPilihan = document.getElementById('khTarikhHarian').value;
             let kelasPilihan = document.getElementById('khKelasSelect').value;
@@ -524,7 +532,6 @@
                 let statusVal = select.value;
                 let catatanVal = catatanInputs[index].value;
 
-                // Memastikan tiada kunci (tarikh + nama) bertindih dihantar ke Supabase
                 mapPayload.set(namaMurid, {
                     tarikh: tarikh,
                     nama: namaMurid,
@@ -667,7 +674,7 @@
             }
         }
 
-        // --- 4. LAPORAN RPH (CUSTOM RANGE DENGAN DATES DALAM EXCEL) ---
+        // --- 4. LAPORAN RPH ---
         function getKehadiranLaporanData() {
             let lapKelas = document.getElementById('laporanKelasSelect')?.value || 'Semua';
             let tMula = document.getElementById('lapTarikhMula')?.value;
@@ -675,7 +682,6 @@
 
             let filteredLapList = (lapKelas === 'Semua') ? muridList : muridList.filter(m => (m.kelas || '').trim() === lapKelas);
 
-            // Dapatkan senarai tarikh yang sah dalam julat
             let availableDates = Object.keys(kehadiranData).filter(d => {
                 return (!tMula || d >= tMula) && (!tAkhir || d <= tAkhir);
             }).sort();
@@ -743,7 +749,7 @@
             });
         }
 
-        // --- EKSPORT EXCEL DENGAN TARIKH LENGKAP PADA LAPORAN ---
+        // --- EXPORT TO EXCEL ---
         function exportToExcel(modul) {
             let dataToExport = [];
             let fileName = '';
@@ -792,7 +798,6 @@
                         "Peratus Kehadiran (%)": r.peratus
                     };
 
-                    // Tambah lajur status mengikut setiap TARIKH individu dalam julat
                     data.availableDates.forEach(d => {
                         let st = kehadiranData[d]?.[r.nama]?.status || 'Tiada Rekod';
                         item[`Tarikh: ${d}`] = st;
