@@ -52,12 +52,14 @@
     .form-group label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; }
     .form-control { width: 100%; padding: 8px 12px; font-size: 13px; border: 1px solid #cbd5e1; border-radius: 6px; }
     .form-row { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn { padding: 8px 16px; border-radius: 6px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+    .btn { padding: 8px 16px; border-radius: 6px; border: none; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: 0.2s; }
     .btn-sm { padding: 4px 10px; font-size: 11px; }
     .btn-primary { background: #1e40af; color: white; }
     .btn-dark { background: #0f172a; color: white; }
     .btn-success { background: #16a34a; color: white; }
+    .btn-danger { background: #dc2626; color: white; }
     .btn-warning { background: #d97706; color: white; }
+    .btn-outline { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
     table { width: 100%; border-collapse: collapse; margin-top: 16px; }
     th, td { border: 1px solid #e2e8f0; padding: 10px; text-align: left; font-size: 13px; }
     th { background: #f8fafc; }
@@ -472,7 +474,7 @@
             });
         }
 
-        // --- 1. KEHADIRAN ---
+// --- 1. KEHADIRAN ---
         function renderKehadiranHarian() {
             let tarikhPilihan = document.getElementById('khTarikhHarian').value;
             let kelasPilihan = document.getElementById('khKelasSelect').value;
@@ -493,25 +495,79 @@
                 let catatanTersimpan = (kehadiranData[tarikhPilihan] && kehadiranData[tarikhPilihan][m.nama]) 
                     ? kehadiranData[tarikhPilihan][m.nama].catatan : '';
 
-                if (statusTersimpan === 'Hadir' || statusTersimpan === 'Lewat') hadirCount++;
+                let isHadir = (statusTersimpan === 'Hadir' || statusTersimpan === 'Lewat');
+                if (isHadir) hadirCount++;
 
                 khBody.innerHTML += `
                     <tr>
                         <td>${index + 1}</td>
-                        <td>${m.nama}</td>
+                        <td><strong>${m.nama}</strong></td>
                         <td><span class="badge-smk">${m.kelas || '-'}</span></td>
                         <td>
-                            <select class="form-control kh-status" data-nama="${m.nama}">
-                                <option value="Hadir" ${statusTersimpan === 'Hadir' ? 'selected' : ''}>Hadir</option>
-                                <option value="Tidak Hadir" ${statusTersimpan === 'Tidak Hadir' ? 'selected' : ''}>Tidak Hadir</option>
-                                <option value="Lewat" ${statusTersimpan === 'Lewat' ? 'selected' : ''}>Lewat</option>
-                            </select>
+                            <div style="display:flex; gap:8px;">
+                                <button type="button" 
+                                    class="btn btn-sm ${isHadir ? 'btn-success' : 'btn-outline'} btn-toggle-status" 
+                                    data-nama="${m.nama}" 
+                                    data-status="Hadir"
+                                    onclick="toggleStatusBtn(this, '${m.nama}', 'Hadir')">
+                                    <i class="fa-solid fa-check"></i> Hadir
+                                </button>
+                                <button type="button" 
+                                    class="btn btn-sm ${!isHadir ? 'btn-danger' : 'btn-outline'} btn-toggle-status" 
+                                    data-nama="${m.nama}" 
+                                    data-status="Tidak Hadir"
+                                    onclick="toggleStatusBtn(this, '${m.nama}', 'Tidak Hadir')">
+                                    <i class="fa-solid fa-xmark"></i> Tidak Hadir
+                                </button>
+                            </div>
                         </td>
-                        <td><input type="text" placeholder="Catatan" class="form-control kh-catatan" data-nama="${m.nama}" value="${catatanTersimpan}"></td>
+                        <td>
+                            <input type="text" 
+                                placeholder="Tulis catatan (cth: Sakit, Kuarantin, Cuti)..." 
+                                class="form-control kh-catatan" 
+                                data-nama="${m.nama}" 
+                                value="${catatanTersimpan}">
+                        </td>
                     </tr>`;
             });
 
             let peratus = totalMurid > 0 ? Math.round((hadirCount / totalMurid) * 100) : 0;
+            document.getElementById('khPeratusText').innerText = peratus + '%';
+            document.getElementById('statPeratus').innerText = peratus + '%';
+        }
+
+        function toggleStatusBtn(btn, namaMurid, newStatus) {
+            let parentTd = btn.closest('td');
+            let buttons = parentTd.querySelectorAll('.btn-toggle-status');
+            
+            buttons.forEach(b => {
+                b.classList.remove('btn-success', 'btn-danger');
+                b.classList.add('btn-outline');
+            });
+
+            if (newStatus === 'Hadir') {
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-success');
+            } else {
+                btn.classList.remove('btn-outline');
+                btn.classList.add('btn-danger');
+            }
+
+            parentTd.setAttribute('data-selected-status', newStatus);
+            kiraSemulaPeratus();
+        }
+
+        function kiraSemulaPeratus() {
+            let rows = document.querySelectorAll('#senaraiKehadiranBody tr');
+            let total = rows.length;
+            let hadir = 0;
+
+            rows.forEach(row => {
+                let activeGreenBtn = row.querySelector('.btn-success');
+                if (activeGreenBtn) hadir++;
+            });
+
+            let peratus = total > 0 ? Math.round((hadir / total) * 100) : 0;
             document.getElementById('khPeratusText').innerText = peratus + '%';
             document.getElementById('statPeratus').innerText = peratus + '%';
         }
@@ -523,14 +579,16 @@
                 return;
             }
 
-            let statusSelects = document.querySelectorAll('.kh-status');
-            let catatanInputs = document.querySelectorAll('.kh-catatan');
-
+            let rows = document.querySelectorAll('#senaraiKehadiranBody tr');
             let mapPayload = new Map();
-            statusSelects.forEach((select, index) => {
-                let namaMurid = select.getAttribute('data-nama');
-                let statusVal = select.value;
-                let catatanVal = catatanInputs[index].value;
+
+            rows.forEach(row => {
+                let catatanInput = row.querySelector('.kh-catatan');
+                let namaMurid = catatanInput.getAttribute('data-nama');
+                let catatanVal = catatanInput.value;
+                
+                let isHadirActive = row.querySelector('.btn-success') !== null;
+                let statusVal = isHadirActive ? 'Hadir' : 'Tidak Hadir';
 
                 mapPayload.set(namaMurid, {
                     tarikh: tarikh,
