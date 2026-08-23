@@ -70,7 +70,6 @@
         *, *:before, *:after { background: transparent !important; color: #000 !important; box-shadow: none !important; text-shadow: none !important; }
         html, body { width: 100%; height: auto; margin: 0 !important; padding: 0 !important; font-size: 11pt; background: #fff !important; }
         
-        /* Sembunyikan elemen luar & semua bahagian kecuali Modul Laporan RPH */
         .no-print, .top-bar, header, .nav-bar, .hero-banner, .grid-cards, .section-title, button,
         #section-dashboard, #section-kehadiran, #section-kerjarumah, #section-murid { 
             display: none !important; 
@@ -78,7 +77,6 @@
 
         .container { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; }
         
-        /* Paparkan hanya Laporan RPH */
         #section-laporan { display: block !important; border: none !important; padding: 0 !important; margin: 0 !important; }
         
         table { width: 100% !important; border-collapse: collapse !important; page-break-inside: auto; margin-top: 10px !important; }
@@ -222,52 +220,51 @@
 
         <!-- MODUL 2: KERJA RUMAH -->
         <div id="section-kerjarumah" class="view-section">
-           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
-        <h2><i class="fa-solid fa-book"></i> Rekod Kerja Rumah & Tugasan</h2>
-        <div class="no-print" style="display:flex; gap:8px;">
-            <button onclick="exportToExcel('kerjarumah')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel</button>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h2><i class="fa-solid fa-book"></i> Rekod Kerja Rumah & Tugasan</h2>
+                <div class="no-print" style="display:flex; gap:8px;">
+                    <button onclick="exportToExcel('kerjarumah')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel</button>
+                </div>
+            </div>
+
+            <!-- Borang Tambah Tugasan Pukal -->
+            <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1; margin-bottom:16px;" class="no-print">
+                <h4 style="font-size:13px; margin-bottom:8px;">Tambah Tugasan / Kerja Rumah Baharu:</h4>
+                <div class="form-row">
+                    <select id="krKelasBorang" class="form-control" style="flex:1;">
+                        <option value="">-- Pilih Kelas --</option>
+                    </select>
+                    <input type="text" id="krTajukInput" placeholder="Tajuk Tugasan (cth: Latihan Matematik)" class="form-control" style="flex:2;">
+                    <button onclick="tambahTugasanPukal()" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah Tugasan Kelas</button>
+                </div>
+            </div>
+
+            <!-- Tapis Mengikut Kelas -->
+            <div style="margin-bottom:16px; display:flex; align-items:center; gap:8px;" class="no-print">
+                <label style="font-size:13px; font-weight:600;">Tapis Mengikut Kelas:</label>
+                <select id="krKelasFilter" class="form-control" style="width:200px;" onchange="renderKerjaRumah()">
+                    <option value="Semua">-- Semua Kelas --</option>
+                </select>
+            </div>
+
+            <!-- Jadual Senarai Tugasan -->
+            <div style="overflow-x:auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:40px;">Bil</th>
+                            <th>Nama Murid</th>
+                            <th>Kelas</th>
+                            <th>Tajuk Tugasan</th>
+                            <th>Status</th>
+                            <th>Catatan</th>
+                            <th style="width:60px;" class="no-print">Tindakan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="senaraiKerjaRumahBody"></tbody>
+                </table>
+            </div>
         </div>
-    </div>
-
-    <!-- Borang Tambah Tugasan Pukal -->
-    <div style="background:#f8fafc; padding:16px; border-radius:8px; border:1px solid #cbd5e1; margin-bottom:16px;" class="no-print">
-        <h4 style="font-size:13px; margin-bottom:8px;">Tambah Tugasan / Kerja Rumah Baharu:</h4>
-        <div class="form-row">
-            <select id="krKelasBorang" class="form-control" style="flex:1;">
-                <option value="">-- Pilih Kelas --</option>
-            </select>
-            <input type="text" id="krTajukInput" placeholder="Tajuk Tugasan (cth: Latihan Matematik)" class="form-control" style="flex:2;">
-            <button onclick="tambahTugasanPukal()" class="btn btn-success"><i class="fa-solid fa-plus"></i> Tambah Tugasan Kelas</button>
-        </div>
-    </div>
-
-    <!-- Tapis Mengikut Kelas -->
-    <div style="margin-bottom:16px; display:flex; align-items:center; gap:8px;" class="no-print">
-        <label style="font-size:13px; font-weight:600;">Tapis Mengikut Kelas:</label>
-        <select id="krKelasFilter" class="form-control" style="width:200px;" onchange="renderKerjaRumah()">
-            <option value="Semua">-- Semua Kelas --</option>
-        </select>
-    </div>
-
-    <!-- Jadual Senarai Tugasan -->
-    <div style="overflow-x:auto;">
-        <table>
-            <thead>
-                <tr>
-                    <th style="width:40px;">Bil</th>
-                    <th>Nama Murid</th>
-                    <th>Kelas</th>
-                    <th>Tajuk Tugasan</th>
-                    <th>Status</th>
-                    <th>Catatan</th>
-                    <th style="width:60px;" class="no-print">Tindakan</th>
-                </tr>
-            </thead>
-            <tbody id="senaraiKerjaRumahBody">
-                <!-- Data akan ditenun oleh JavaScript -->
-            </tbody>
-        </table>
-    </div>
 
         <!-- MODUL 3: MAKLUMAT MURID -->
         <div id="section-murid" class="view-section">
@@ -311,7 +308,7 @@
             </table>
         </div>
 
-        <!-- MODUL 4: LAPORAN RPH (KHAS UNTUK DINETAK) -->
+        <!-- MODUL 4: LAPORAN RPH (KHAS UNTUK DICETAK) -->
         <div id="section-laporan" class="view-section">
             <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #000; padding-bottom:12px; margin-bottom:16px;">
                 <div style="text-align:left;">
@@ -319,7 +316,7 @@
                     <p style="font-size:12px; color:#555;">SK NONG CHIK • GURU: CIKGU ATHIRA</p>
                 </div>
                 <div class="no-print" style="display:flex; gap:8px;">
-                    <button onclick="exportToExcel('laporan')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel Laporan (Custom Range)</button>
+                    <button onclick="exportToExcel('laporan')" class="btn btn-success"><i class="fa-solid fa-file-excel"></i> Eksport Excel Laporan</button>
                     <button onclick="window.print()" class="btn btn-dark"><i class="fa-solid fa-print"></i> Cetak PDF / A4</button>
                 </div>
             </div>
@@ -425,11 +422,9 @@
                     muridList = Array.from(uniqueMap.values());
                 }
 
-                const { data: krData } = await db.from('kerjarumah').select('*');
-                if (krData) kerjaRumahData = krData; //(Nota: guna kerjaRumahData)
-                // TAMBAH 2 BARIS INI DI SINI (Baris 430):
-        renderKerjaRumahDropdowns();
-        renderKerjaRumah();
+                const { data: krData } = await db.from('kerja_rumah').select('*');
+                if (krData) kerjaRumahList = krData;
+
                 const { data: khData } = await db.from('kehadiran').select('*');
                 if (khData) {
                     kehadiranData = {};
@@ -444,13 +439,13 @@
 
             populateClassDropdowns();
             renderKehadiranHarian();
+            renderKerjaRumah();
         }
 
         function populateClassDropdowns() {
-            let classes = [...new Set(muridList.map(m => (m.kelas || '').trim()).filter(Boolean))];
-            if (classes.length === 0) classes = ['Tiada Kelas'];
+            let classes = [...new Set(muridList.map(m => (m.kelas || '').trim()).filter(Boolean))].sort();
 
-            let dropdownIds = ['khKelasSelect', 'krKelasSelect', 'krFilterKelasSelect', 'laporanKelasSelect', 'muridFilterKelasSelect'];
+            let dropdownIds = ['khKelasSelect', 'laporanKelasSelect', 'muridFilterKelasSelect'];
             dropdownIds.forEach(id => {
                 let el = document.getElementById(id);
                 if (!el) return;
@@ -462,25 +457,10 @@
                 if (classes.includes(currentVal)) el.value = currentVal;
             });
 
-            updateKRStudentDropdown();
+            renderKerjaRumahDropdowns();
         }
 
-        function updateKRStudentDropdown() {
-            let selectedKelas = document.getElementById('krKelasSelect')?.value || 'Semua';
-            let krNamaSelect = document.getElementById('krNamaSelect');
-            if (!krNamaSelect) return;
-            krNamaSelect.innerHTML = '';
-
-            let filteredStudents = (selectedKelas === 'Semua' || !selectedKelas) 
-                ? muridList 
-                : muridList.filter(m => (m.kelas || '').trim() === selectedKelas);
-
-            filteredStudents.forEach(m => {
-                krNamaSelect.innerHTML += `<option value="${m.nama}">${m.nama} (${m.kelas || 'Tiada Kelas'})</option>`;
-            });
-        }
-
-// --- 1. KEHADIRAN ---
+        // --- 1. KEHADIRAN ---
         function renderKehadiranHarian() {
             let tarikhPilihan = document.getElementById('khTarikhHarian').value;
             let kelasPilihan = document.getElementById('khKelasSelect').value;
@@ -681,8 +661,8 @@
             krBody.innerHTML = '';
 
             let dataFiltered = (filterKelas === 'Semua') 
-                ? kerjaRumahData 
-                : kerjaRumahData.filter(k => (k.kelas || '').trim() === filterKelas);
+                ? kerjaRumahList 
+                : kerjaRumahList.filter(k => (k.kelas || '').trim() === filterKelas);
 
             if (dataFiltered.length === 0) {
                 krBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:#94a3b8;">Tiada rekod kerja rumah.</td></tr>';
@@ -734,7 +714,7 @@
             if (error) {
                 alert('Gagal mengemas kini status: ' + error.message);
             } else {
-                let item = kerjaRumahData.find(k => k.id === id);
+                let item = kerjaRumahList.find(k => k.id === id);
                 if (item) item.status = statusBaharu;
                 renderKerjaRumah();
             }
@@ -745,7 +725,7 @@
             if (error) {
                 console.error('Gagal mengemas kini catatan:', error.message);
             } else {
-                let item = kerjaRumahData.find(k => k.id === id);
+                let item = kerjaRumahList.find(k => k.id === id);
                 if (item) item.catatan = catatanBaharu;
             }
         }
@@ -759,6 +739,7 @@
                 await loadDataFromSupabase();
             }
         }
+
         // --- 3. MAKLUMAT MURID ---
         function renderMurid() {
             let muridFilterKelas = document.getElementById('muridFilterKelasSelect')?.value || 'Semua';
@@ -894,7 +875,7 @@
             let fileName = '';
 
             if (modul === 'kerjarumah') {
-                let selectedKelas = document.getElementById('krFilterKelasSelect')?.value || 'Semua';
+                let selectedKelas = document.getElementById('krKelasFilter')?.value || 'Semua';
                 let list = (selectedKelas === 'Semua') ? kerjaRumahList : kerjaRumahList.filter(kr => (kr.kelas || '').trim() === selectedKelas);
 
                 list.forEach((kr, i) => {
@@ -903,7 +884,8 @@
                         "Nama Murid": kr.nama,
                         "Kelas": kr.kelas || '-',
                         "Tajuk Tugasan": kr.tajuk,
-                        "Status": kr.status
+                        "Status": kr.status,
+                        "Catatan": kr.catatan || ''
                     });
                 });
                 fileName = `KerjaRumah_${selectedKelas}.xlsx`;
