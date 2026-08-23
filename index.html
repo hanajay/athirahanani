@@ -426,8 +426,10 @@
                 }
 
                 const { data: krData } = await db.from('kerjarumah').select('*');
-                if (krData) kerjaRumahList = krData;
-
+                if (krData) kerjaRumahData = krData; //(Nota: guna kerjaRumahData)
+                // TAMBAH 2 BARIS INI DI SINI (Baris 430):
+        renderKerjaRumahDropdowns();
+        renderKerjaRumah();
                 const { data: khData } = await db.from('kehadiran').select('*');
                 if (khData) {
                     kehadiranData = {};
