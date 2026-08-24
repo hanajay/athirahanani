@@ -496,7 +496,24 @@ function kemaskiniCartaKehadiran(jumlahHadir, jumlahGhaib) {
             let khBody = document.getElementById('senaraiKehadiranBody');
             if(!khBody) return;
             khBody.innerHTML = '';
+                    // Semak jika tarikh yang dipilih ialah hari Sabtu atau Ahad
+    const selectedDate = new Date(tarikhPilihan);
+    const dayOfWeek = selectedDate.getDay(); // 0 = Ahad, 6 = Sabtu
 
+    if (dayOfWeek === 0 || dayOfWeek === 6) {
+        khBody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#ef4444; padding:20px;">
+            <b>Hari Minggu / Hujung Minggu</b><br>Tiada sesi persekolahan pada hari Sabtu dan Ahad.
+        </td></tr>`;
+        
+        document.getElementById('khPeratusText').innerText = '0%';
+        if (document.getElementById('statPeratus')) {
+            document.getElementById('statPeratus').innerText = '0%';
+        }
+        
+        // Padamkan/kosongkan carta
+        kemaskiniCartaKehadiran(0, 0);
+        return; // Hentikan fungsi
+    }
             let filteredMurid = (kelasPilihan === 'Semua') 
                 ? muridList 
                 : muridList.filter(m => (m.kelas || '').trim() === kelasPilihan);
